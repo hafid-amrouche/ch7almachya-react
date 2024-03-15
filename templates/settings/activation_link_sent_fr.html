@@ -1,0 +1,5 @@
+{% autoescape off %} 
+Salut {{ user.first_name|capfirst }}, je suis un admin de "Ch7al machya".
+Veuillez cliquer sur le lien ci-dessous pour confirmer votre inscription.
+http://{{ domain }}{% url 'confirm-activation' uidb64=uid token=token %} 
+{% endautoescape %}
