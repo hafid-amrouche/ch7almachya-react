@@ -5,11 +5,13 @@
 __pycache__
 db.sqlite3
 ch7almachya/settings.py
-media/*
-media/users/*
-!media/brands_flags/
-!media/countries_flags/
+# media/*
+# media/users/*
+# !media/brands_flags/
+# !media/countries_flags/
 websrape_ouedkniss-master/
+
+static/
 
 # Backup files # 
 *.bak 
