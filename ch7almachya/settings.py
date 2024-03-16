@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-c1keeb^z3+rzg@0s26)$md87kjdhf%_8@_%w!w7zh!^=-uyyc)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hafiddjango.pythonanywhere.com']
+ALLOWED_HOSTS = ['hafiddjango.pythonanywhere.com', 'localhost']
 
 
 # Application definition
@@ -146,10 +146,11 @@ USE_L10N = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
+    BASE_DIR / 'static',
     BASE_DIR / 'react/build/static'
 ]
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
