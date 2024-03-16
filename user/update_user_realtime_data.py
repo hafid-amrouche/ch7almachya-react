@@ -45,7 +45,7 @@ def update_message(user_id, friend_id, message):
     channel_layer = get_channel_layer()
     serializer_message = MessageSerializer(message).data
     async_to_sync(channel_layer.group_send)(
-        f'chatroom-{user_id}-{friend_id}', 
+        f'chatroom-{min(user_id, friend_id)}-{max(user_id, friend_id)}', 
         {
             'type' : 'send_message',
             'message' : message,

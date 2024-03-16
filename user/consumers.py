@@ -79,15 +79,14 @@ class ChatRoomConsumer(AsyncWebsocketConsumer):
         token_key = query_parameters.get("token", [""])[0]
         user = await get_user(token_key)
         if user :
-            self.friend_id = query_parameters.get("friend-id", [""])[0]
+            self.friend_id = int(query_parameters.get("friend-id", [""])[0])
             self.user_id = user.id
-            self.room_group_name = f'chatroom-{self.user_id}-{self.friend_id }'
+            self.room_group_name = f'chatroom-{min(self.user_id, self.friend_id)}-{max(self.user_id, self.friend_id)}'
             await self.channel_layer.group_add(
                 self.room_group_name,
                 self.channel_name
             )
             await self.accept()
-            # print(f"User {user.username}, Friend id: {self.friend_id}, connected to the Chat-Box.")
         else:
             self.disconnect()
 

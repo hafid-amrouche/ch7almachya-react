@@ -36,10 +36,11 @@ def send_message(request):
             # send new conversation to user
             serializer_conversation = ConversationSerializer(conversation, many=False, context={'user' : friend}).data
             update_conversation(friend.id, serializer_conversation)
+            if friend != user:
+                serializer_conversation = ConversationSerializer(conversation, many=False, context={'user' : user}).data
+                update_conversation(user.id, serializer_conversation)
             #################################
-
-            message = MessageSerializer(message, many=False).data
-            return Response(message)
+            return JsonResponse({'detail' : 'Sent'}, status=200)
         else:
             return JsonResponse({'detail' : 'Message cannot be empty'}, status=400) 
     except Exception as e:

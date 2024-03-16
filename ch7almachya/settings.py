@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-c1keeb^z3+rzg@0s26)$md87kjdhf%_8@_%w!w7zh!^=-uyyc)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hafiddjango.pythonanywhere.com', 'localhost']
+ALLOWED_HOSTS = ['hafiddjango.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -165,7 +165,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    'hafiddjango.pythonanywhere.com'
+    'https://hafiddjango.pythonanywhere.com'
 ]
 
 #########################
