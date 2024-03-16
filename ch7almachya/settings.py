@@ -146,8 +146,8 @@ USE_L10N = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-    BASE_DIR / 'react/build/static',
+    # BASE_DIR / 'static',
+    # BASE_DIR / 'react/build/static',
     BASE_DIR / 'staticfiles'
 ]
 
