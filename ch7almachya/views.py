@@ -32,7 +32,6 @@ from django.utils.translation import check_for_language
 
 @api_view(['GET'])
 def home(request):
-    time.sleep(2)
     serialized_data = []
     for category in Category.objects.all():
         serialized_data.append({
@@ -47,7 +46,6 @@ def home(request):
 
 @api_view(['GET'])
 def get_ads(request):
-    time.sleep(0.2)
     ads=AdSerializer(Ad.objects.filter(ad_type='swiper'), many=True).data
     staticAd = AdSerializer(Ad.objects.get(ad_type='static')).data
     return Response([ads, staticAd])
@@ -58,7 +56,6 @@ def checkUsername(request):
     return JsonResponse([not users_exist, username], safe=False)
 
 def parameters(request, lang=None):
-    time.sleep(1)
     ColorSerializer, DocumentSerializer, GearBoxSerializer, FuelSerializer, OptionSerializer
     lang = lang if lang else request.LANGUAGE_CODE 
     name_lang = 'name_{}'.format(lang)
@@ -100,7 +97,6 @@ def setLanguage(request):
         return response
 
 def send_verfication_token(request):
-    time.sleep(1)
     email_or_username = request.GET.get('email').strip()
     if not email_or_username:
         return JsonResponse({'detail' : _('No user exists with that email or username')}, status=400)
@@ -163,7 +159,6 @@ def serve_resized_image(request, width):
 
 @api_view(['POST'])
 def report(request):
-    time.sleep(1)
     type = request.POST.get('type')
     query_dict = {}
     if request.user.is_authenticated:
@@ -201,7 +196,6 @@ def report(request):
     return JsonResponse({'detail' : _('Your report was submited successfully')}, status=200)
 
 def contact_us(request):
-    time.sleep(1)
     try:
         email = request.POST.get('email').strip()
         name = request.POST.get('name').strip()

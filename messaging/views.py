@@ -16,7 +16,6 @@ from django.utils.translation import gettext as _
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def send_message(request):
-    time.sleep(1)
     try:
         user = request.user
         friend = User.objects.get(id=request.POST.get('friend_id'))
@@ -55,7 +54,6 @@ def send_message(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_messages(request):
-    time.sleep(1)
     user = request.user
     friend = User.objects.get(id=request.POST.get('friend-id'))
     seen_messages = json.loads(request.POST.get('seen-messages'))
@@ -81,7 +79,6 @@ def get_messages(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_conversations(request):
-    time.sleep(1)
     seen_conversations = json.loads(request.POST.get('seen-conversations'))
     try:
         conversations = Conversation.objects.filter(Q(user1 = request.user )| Q(user2 = request.user)).exclude(id__in=seen_conversations)

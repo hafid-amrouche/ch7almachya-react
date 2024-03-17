@@ -22,7 +22,6 @@ current_year = str(datetime.now().year)
 
 @api_view(['GET'])
 def get_article(request):
-    time.sleep(1)
     try:
         article = Article.objects.get(id=request.GET.get('id'))
         article.notification_set.all().update(is_seen=True, is_acknowledged=True)
@@ -37,7 +36,6 @@ def get_article(request):
 
 @api_view(['POST'])
 def get_article_comments(request):
-    time.sleep(1)
     article_id = request.POST.get('article-id')
     seen_comments = json.loads(request.POST.get('seen-comments'))
     comments = Comment.objects.filter(article__id = article_id).exclude(id__in = seen_comments)
@@ -50,7 +48,6 @@ def get_article_comments(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def delete_comment(request):
-    time.sleep(1)
     comment_id = request.POST.get('comment-id')
     comment = Comment.objects.get(id = comment_id)
     if request.user.is_authenticated and (comment.commenter == request.user or comment.article.creator == request.user):
@@ -62,7 +59,6 @@ def delete_comment(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_comment(request):
-    time.sleep(1)
     text = request.POST.get('text').strip()
     if text :
         comment = request.user.comments.create(
@@ -76,7 +72,6 @@ def create_comment(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def like_article(request):
-    time.sleep(1)
     article = Article.objects.get(id=request.POST.get('article-id'))
     like, cond = Like.objects.get_or_create(liker=request.user, article=article)
     if not cond:
@@ -100,7 +95,6 @@ def like_article(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def dislike_article(request):
-    time.sleep(1)
     article = Article.objects.get(id=request.POST.get('article-id'))
     dislike, cond = Dislike.objects.get_or_create(disliker=request.user, article=article)
     if not cond:
@@ -124,7 +118,6 @@ def dislike_article(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])   
 def toggle_save_article(request):
-    time.sleep(1)
     article = Article.objects.get(id=request.POST.get('article-id'))
     user = request.user
     is_saver = False
@@ -343,7 +336,6 @@ def filter_articles_by_search_text(articles, search_text_words_list):
 
 
 def SA(filter_parameters, seen_articles, search_text_words_list, search_text):
-    time.sleep(1)
     articles = Article.objects.exclude(id__in = seen_articles)
     filtered_articles_by_parameters = filter_articles_by_parameter(articles,filter_parameters)
     if search_text != '*' :
@@ -360,7 +352,6 @@ def SA(filter_parameters, seen_articles, search_text_words_list, search_text):
 
 @api_view(['POST'])
 def serach_articles(request): 
-    time.sleep(1)
     filter_parameters = request.POST.get('filter_parameters')
     filter_parameters = json.loads(filter_parameters)
     seen_articles = json.loads(request.POST.get('seen_articles'))
@@ -370,7 +361,6 @@ def serach_articles(request):
 
 @api_view(['GET'])
 def get_simular_articles(request):
-    time.sleep(1)
     search_text = request.GET.get('search_text')
     search_text_words_list = json.loads(request.GET.get('search_text_words_list'))
     article_id = request.GET.get('article_id')
@@ -386,7 +376,6 @@ def article_suggestions(request):
 
 @api_view(['GET'])
 def article_other_info(request):
-    time.sleep(0.5)
     article_id = request.GET.get('article-id') 
     article = Article.objects.get(id =article_id)
     serialized_other_info = ArticleCardAOtherOptions(article, many=False).data

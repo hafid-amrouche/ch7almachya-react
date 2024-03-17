@@ -316,7 +316,6 @@ def update_article(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_user_articles(request):
-    time.sleep(1)
     seen_articles = json.loads(request.POST.get('seen-articles'))
     try:
         articles = Article.objects.filter(creator = request.user).exclude(id__in=seen_articles)
@@ -330,7 +329,6 @@ def get_user_articles(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def delete_article(request):
-    time.sleep(1)
     article_id = request.POST.get('article_id')
     try:
         article = Article.objects.get(creator=request.user, id=article_id)
@@ -346,7 +344,6 @@ def delete_article(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def saved_articles(request):
-    time.sleep(1)
     try:
         saved_articles = request.user.saved_articles.all()
         cond = saved_articles.count() > 20
@@ -360,7 +357,6 @@ def saved_articles(request):
 
 @api_view(['GET'])
 def get_article_for_edit(request):
-    time.sleep(1)
     try:
         article = request.user.articles.get(id=request.GET.get('article-id'))
         return Response(EditArticleSerializer(article).data, status=200)
@@ -371,7 +367,6 @@ def get_article_for_edit(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def delete_image(request):
-    time.sleep(1)
     image_id = request.POST.get('article_id')
     article = request.user.articles.get(id=image_id)
     data = None
@@ -388,7 +383,6 @@ def delete_image(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def set_main_image(request):
-    time.sleep(1)
     article = request.user.articles.get(id=request.POST.get('article_id'))
     data = request.POST.get('image_id')
     image = article.image_set.get(id=data)

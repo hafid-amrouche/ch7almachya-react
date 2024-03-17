@@ -150,7 +150,7 @@ def get_profile(request, username):
     
 @api_view(['POST'])
 def get_user_articles(request, username):
-    time.sleep(1)
+
     seen_articles = json.loads(request.POST.get('seen-articles'))
     try:
         articles = Article.objects.filter(creator__username = username).exclude(id__in=seen_articles)
@@ -163,7 +163,7 @@ def get_user_articles(request, username):
     
 @api_view(['POST'])
 def toggle_follower(request, username):
-    time.sleep(1)
+
     try:
         creator = User.objects.get(username=username)
         followers = creator.followers
@@ -181,7 +181,7 @@ def toggle_follower(request, username):
     
 @api_view(['POST'])
 def serach_users(request):
-    time.sleep(1)
+
     search_text_words_list = json.loads(request.POST.get('search_text_words_list'))
     search_text = request.POST.get('search_text')
     seen_users = json.loads(request.POST.get('seen_users'))
@@ -227,7 +227,7 @@ def users_suggestions(request):
 
 @api_view(['GET'])
 def get_user_about(request):
-    time.sleep(1)
+
     username = request.GET.get('username')
     user = User.objects.get(username = username)
     user_reviews = Review.objects.filter(user = user)
@@ -274,7 +274,7 @@ def get_user_about(request):
 
 @api_view(['POST'])
 def rate_user(request):
-    time.sleep(1)
+
     username = request.POST.get('username')
     seller = User.objects.get(username=username)
     review = Review.objects.get_or_create(user = seller, reviewer=request.user)[0]
@@ -297,7 +297,7 @@ def logout(request):
 
 @api_view(['POST'])
 def refresh_user_token(request):
-    time.sleep(1)
+
     token = request.POST.get('refresh')
     token_obj = UserToken.objects.get(token=token)
 

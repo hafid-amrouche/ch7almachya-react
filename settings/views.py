@@ -30,7 +30,7 @@ from django.utils.translation import gettext as _
 @permission_classes([IsAuthenticated])
 def update_profile(request):
   try :
-      time.sleep(1)
+  
       user = request.user
       profile = Profile.objects.get(user=user)
       data = request.data
@@ -65,7 +65,7 @@ def update_profile(request):
 @permission_classes([IsAuthenticated])
 def update_location(request):
   try :
-      time.sleep(1)
+  
       data = request.data
       user = request.user
       location = user.location
@@ -85,7 +85,7 @@ def update_location(request):
 @permission_classes([IsAuthenticated])
 def update_page(request):
     try :
-        time.sleep(1)
+    
         user = request.user
         page = Page.objects.get(user=user)
         data = request.data
@@ -112,7 +112,7 @@ def update_page(request):
 @permission_classes([IsAuthenticated])
 def update_account(request):
   try :
-      time.sleep(1)
+  
       user = request.user
       user_extention = user.extention
       data = request.data
@@ -157,7 +157,7 @@ def update_account(request):
 @permission_classes([IsAuthenticated])
 def update_socials(request):
     try :
-        time.sleep(1)
+    
         user = request.user
         user_extention = user.extention
         data = request.data
@@ -190,7 +190,7 @@ def update_socials(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_profile_image(request):
-    time.sleep(1)
+
     user = request.user
     user_extention = user.extention
     image = Image.open(request.FILES.get('image'))
@@ -230,7 +230,7 @@ def update_profile_image(request):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def remove_profile_image(request):
-    time.sleep(1)
+
     user = request.user
     extention = user.extention
     try:
@@ -343,7 +343,7 @@ def confirm_email_activation(request, uidb64, token):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def change_password(request):
-    time.sleep(1)
+
     current_password = request.POST.get('current_password')
     new_password = request.POST.get('new_password')
     confirm_password = request.POST.get('confirm_password')
