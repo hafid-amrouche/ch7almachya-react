@@ -1,7 +1,6 @@
 
-import json
 from pyfcm import FCMNotification
-from firebase_admin import messaging
+# from firebase_admin import messaging
 
 
 
