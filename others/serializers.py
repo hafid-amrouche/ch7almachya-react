@@ -23,8 +23,10 @@ class NotificationSerializer(serializers.ModelSerializer):
     
     url = serializers.SerializerMethodField(read_only=True)
     def get_url(self, obj):
-        if obj.notification_type in ['like', 'dislike', 'comment']:
+        if obj.notification_type in ['like', 'dislike']:
             return f'/@{obj.notified.username}/{obj.article.brand.name.lower()}-{obj.article.title}-{obj.article.id}/'
+        elif obj.notification_type == 'comment':
+            return f'/@{obj.notifier.username}/{obj.article.brand.name.lower()}-{obj.article.title}-{obj.article.id}/{obj.comment.id}/'
         elif obj.notification_type == 'leader_posted':
             return f'/@{obj.notifier.username}/{obj.article.brand.name.lower()}-{obj.article.title}-{obj.article.id}/'
         elif obj.notification_type == 'follow':

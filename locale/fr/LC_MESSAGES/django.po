@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-15 22:45+0000\n"
+"POT-Creation-Date: 2024-03-29 14:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,42 +18,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: .\ch7almachya\views.py:106 .\ch7almachya\views.py:127
+#: .\ch7almachya\views.py:104 .\ch7almachya\views.py:124
 msgid "No user exists with that email or username"
 msgstr ""
 "Aucun utilisateur n'existe avec cette adresse e-mail ou ce nom d'utilisateur"
 
-#: .\ch7almachya\views.py:125
+#: .\ch7almachya\views.py:122
 msgid "We have sent an email with the verification link to the email of \"{}\""
 msgstr ""
 "Nous avons envoyé un e-mail avec le lien de vérification à l'adresse e-mail "
 "de \"{}\""
 
-#: .\ch7almachya\views.py:150
+#: .\ch7almachya\views.py:149
 msgid "Password reset successfully"
 msgstr "Mot de passe réinitialisé avec succès"
 
-#: .\ch7almachya\views.py:152
+#: .\ch7almachya\views.py:151
 msgid "Error"
 msgstr ""
 
-#: .\ch7almachya\views.py:174
+#: .\ch7almachya\views.py:168
 msgid "You have to be logged to report this {}"
 msgstr "Vous devez être connecté pour signaler ce {}"
 
-#: .\ch7almachya\views.py:200
+#: .\ch7almachya\views.py:190
 msgid "You have already repoted this {}"
 msgstr "Vous l'avez déjà signalé ce {}"
 
-#: .\ch7almachya\views.py:201
+#: .\ch7almachya\views.py:196
 msgid "Your report was submited successfully"
 msgstr "Votre rapport a été soumis avec succès"
 
-#: .\ch7almachya\views.py:216
+#: .\ch7almachya\views.py:210
 msgid "Your message was sent successfully"
 msgstr "Votre message a bien été envoyé"
 
-#: .\ch7almachya\views.py:218
+#: .\ch7almachya\views.py:212
 msgid ""
 "Your message was not sent, please make sure that all field are filled and "
 "your email is corret."
@@ -61,15 +61,15 @@ msgstr ""
 "Votre message n'a pas été envoyé, veuillez vous assurer que tous les champs "
 "sont remplis et votre email est correct."
 
-#: .\dashboard\views.py:27
+#: .\dashboard\views.py:28
 msgid "You cannot create more than 20 articles in the basic plan"
 msgstr "Vous ne pouvez pas créer plus de 20 articles dans le forfait de base"
 
-#: .\dashboard\views.py:32 .\dashboard\views.py:193
+#: .\dashboard\views.py:33 .\dashboard\views.py:193
 msgid "Title cannot be empty"
 msgstr "Le titre ne peut pas être vide"
 
-#: .\dashboard\views.py:109
+#: .\dashboard\views.py:110
 msgid "The images you sent were not recognized please try again"
 msgstr ""
 "Les images que vous avez envoyées n'ont pas été reconnues, veuillez réessayer"
@@ -84,99 +84,103 @@ msgstr ""
 msgid "Your artcile was created successfully"
 msgstr "Votre article a été créé avec succès"
 
-#: .\dashboard\views.py:307
+#: .\dashboard\views.py:313
 msgid "Your artcile was updated successfully"
 msgstr "Votre article a été mis à jour avec succès"
 
-#: .\dashboard\views.py:340
+#: .\dashboard\views.py:344
 msgid "the article \"{} - {}\" has been deleted successfully"
 msgstr "l'article \"{} - {}\" a été supprimé avec succès"
 
-#: .\dashboard\views.py:343
+#: .\dashboard\views.py:347
 msgid "Article was not deleted"
 msgstr "L'article n'a pas été supprimé"
 
-#: .\others\serializers.py:38 .\others\signals.py:17
+#: .\functions.py:39
+msgid "Message from ch7al machya"
+msgstr "Message de Ch7al Machya"
+
+#: .\others\serializers.py:41 .\others\signals.py:20
 msgid "has liked your article \"{}\""
 msgstr "a aimé votre article \"{}\""
 
-#: .\others\serializers.py:41 .\others\signals.py:19
+#: .\others\serializers.py:44 .\others\signals.py:23
 msgid "has disliked your article \"{}\""
 msgstr "n'a pas aimé votre article \"{}\""
 
-#: .\others\serializers.py:44 .\others\signals.py:21
+#: .\others\serializers.py:47 .\others\signals.py:26
 msgid "has commented your article \"{}\""
 msgstr "a commenté votre article \"{}\""
 
-#: .\others\serializers.py:47 .\others\signals.py:23
+#: .\others\serializers.py:50 .\others\signals.py:29
 msgid "has started following you"
 msgstr "a commencé à te suivre"
 
-#: .\others\serializers.py:50 .\others\signals.py:25
+#: .\others\serializers.py:53 .\others\signals.py:32
 msgid "has posted an article \"{}\""
 msgstr "a publié un article \"{}\""
 
-#: .\settings\views.py:61
+#: .\settings\views.py:66
 msgid "Your profile information was not updated"
 msgstr "Les informations de votre profil n'ont pas été mises à jour"
 
-#: .\settings\views.py:80
+#: .\settings\views.py:85
 msgid "Your profile location was not updated"
 msgstr "L'emplacement de votre profil n'a pas été mis à jour"
 
-#: .\settings\views.py:96
+#: .\settings\views.py:100
 msgid "Page name cannot be empty"
 msgstr "Le nom de la page ne peut pas être vide"
 
-#: .\settings\views.py:108
+#: .\settings\views.py:114
 msgid "Your page information was not updated"
 msgstr "Les informations de votre page n'ont pas été mises à jour"
 
-#: .\settings\views.py:153
+#: .\settings\views.py:159
 msgid "Your account information was not updated"
 msgstr "Les informations de votre compte n'ont pas été mises à jour"
 
-#: .\settings\views.py:187
+#: .\settings\views.py:193
 msgid "Your socials were not updated"
 msgstr "Vos réseaux sociaux n'ont pas été mis à jour"
 
-#: .\settings\views.py:227
+#: .\settings\views.py:235
 msgid "Your profile picture was not updated"
 msgstr "Votre photo de profil n'a pas été mise à jour"
 
-#: .\settings\views.py:245
+#: .\settings\views.py:253
 msgid "Your profile picture was not deleted"
 msgstr "Votre photo de profil n'a pas été supprimée"
 
-#: .\settings\views.py:255
+#: .\settings\views.py:262
 msgid "This email \"{}\" is already used, please use another email"
 msgstr "Cet e-mail \"{}\" est déjà utilisé, veuillez utiliser un autre e-mail"
 
-#: .\settings\views.py:262
+#: .\settings\views.py:269
 msgid "Your email \"{}\" is set successfully"
 msgstr "Votre adresse e-mail \"{}\" est définie avec succès"
 
-#: .\settings\views.py:267
+#: .\settings\views.py:275
 msgid "This email \"{}\" has a wrong format"
 msgstr "Cet e-mail \"{}\" a un format incorrect"
 
-#: .\settings\views.py:276
+#: .\settings\views.py:284
 msgid "This email \"{}\" is used, please use a another email"
 msgstr "Cet e-mail \"{}\" est utilisé, veuillez utiliser un autre e-mail"
 
-#: .\settings\views.py:279
+#: .\settings\views.py:287
 msgid "New email is the same as the current email"
 msgstr "Le nouvel e-mail est le même que l'e-mail actuel"
 
-#: .\settings\views.py:288
+#: .\settings\views.py:296
 msgid "Your email is updated successfully from \"{}\" to \"{}\""
 msgstr "Votre adresse e-mail a été mise à jour avec succès de \"{}\" à \"{}\""
 
-#: .\settings\views.py:311
+#: .\settings\views.py:320
 msgid "We sent the activation link to your email \"{}\""
 msgstr "Nous avons envoyé le lien d'activation à votre adresse e-mail \"{}\""
 
-#: .\settings\views.py:314
+#: .\settings\views.py:323
 msgid ""
 "Email verification failed, please try again. If this problem still occurs "
 "please contact our customer service"
@@ -184,111 +188,171 @@ msgstr ""
 "La vérification de l'e-mail a échoué, veuillez réessayer. Si ce problème "
 "persisteveuillez contacter notre service client"
 
-#: .\settings\views.py:324
+#: .\settings\views.py:333
 msgid "Email was deleted successfully"
 msgstr "L'e-mail a été supprimé avec succès"
 
-#: .\settings\views.py:352
+#: .\settings\views.py:360
 msgid "Current password is wrong"
 msgstr "Le mot de passe actuel est erroné"
 
-#: .\settings\views.py:356
+#: .\settings\views.py:364
 msgid "New password cannot be empty"
 msgstr "Le mot de passe actuel est erroné"
 
-#: .\settings\views.py:360
+#: .\settings\views.py:368
 msgid "New password should have at least 8 characters"
 msgstr "Le nouveau mot de passe doit contenir au moins 8 caractères"
 
-#: .\settings\views.py:364 .\user\views.py:99
+#: .\settings\views.py:372 .\user\views.py:105
 msgid "Passwords Do not match"
 msgstr "Les mots de passe ne correspondent pas"
 
-#: .\settings\views.py:369
+#: .\settings\views.py:379
 msgid "Your password have been updated successfully"
 msgstr "Votre mot de passe a été mis à jour avec succès"
 
-#: .\settings\views.py:378
+#: .\settings\views.py:388
 msgid "Your account was deleted successfully"
 msgstr "Votre compte a été supprimé avec succès"
 
-#: .\settings\views.py:381
+#: .\settings\views.py:391
 msgid "The account you want to delete was not found"
 msgstr "Le compte que vous souhaitez supprimer n'a pas été trouvé"
 
-#: .\settings\views.py:393 .\user\views.py:83
+#: .\settings\views.py:403 .\user\views.py:89
 msgid "Username field cannot be empty"
 msgstr "Le champ du nom d'utilisateur ne peut pas être vide"
 
-#: .\settings\views.py:397 .\user\views.py:87
+#: .\settings\views.py:407 .\user\views.py:93
 msgid "This username {} is taken"
 msgstr "Ce nom d'utilisateur {} est pris"
 
-#: .\user\views.py:55
+#: .\staff\views.py:77
+msgid "Your comment \"{}\" was deleted"
+msgstr "Votre compte a été supprimé"
+
+#: .\staff\views.py:85
+msgid ""
+"Your report on the comment of user @{} was accepted and we deleted his "
+"comment. Thank you for making Ch7al machya a safer place"
+msgstr ""
+"Votre rapport sur le commentaire de l'utilisateur @{} a été accepté et nous avons supprimé son "
+"commentaire. Merci d'avoir fait de Ch7al machya un endroit plus sûr"
+
+#: .\staff\views.py:94
+msgid "Your article \"{}\" was deleted"
+msgstr "Votre article a été supprimé"
+
+#: .\staff\views.py:102
+msgid ""
+"Your report on the article of user @{} was accepted and we deleted his "
+"article. Thank you for making Ch7al machya a safer place"
+msgstr ""
+"Votre rapport sur l'article de l'utilisateur @{} a été accepté et nous avons supprimé son "
+"article. Merci d'avoir fait de Ch7al machya un endroit plus sûr"
+
+#: .\staff\views.py:120
+msgid ""
+"Your report on the user @{} was accepted and we deleted his account. Thank "
+"you for making Ch7al machya a safer place"
+msgstr ""
+"Votre rapport sur l'utilisateur @{} a été accepté et nous avons supprimé son compte. Merci "
+"vous avez fait de Ch7al machya un endroit plus sûr"
+
+#: .\staff\views.py:149
+msgid ""
+"Your report on the comment \"{}\" was reviewed and we decided not to delete "
+"his comment."
+msgstr ""
+"Votre rapport sur le commentaire \"{}\" a été examiné et nous avons décidé de ne pas le supprimer "
+"son commentaire."
+
+#: .\staff\views.py:159
+msgid ""
+"Your report on the article \"{}\" was reviewed and we decided no to delete "
+"his article."
+msgstr ""
+"Votre rapport sur l'article \"{}\" a été examiné et nous avons décidé de ne pas le supprimer "
+"son article."
+
+#: .\staff\views.py:169
+msgid ""
+"Your report on the user @{} was reviewed and we decided not to delete his "
+"account."
+msgstr ""
+"Votre rapport sur l'utilisateur @{} a été examiné et nous avons décidé de ne pas supprimer son "
+"compte."
+
+#: .\user\views.py:58
+msgid "Your account has been deleted."
+msgstr "Votre compte a été supprimé"
+
+#: .\user\views.py:62
 msgid "There is no user with this username and password."
 msgstr "Aucun utilisateur ne possède ce nom d'utilisateur et ce mot de passe."
 
-#: .\user\views.py:75
+#: .\user\views.py:81
 msgid "First name cannot be empty"
 msgstr "Le prénom ne peut pas être vide"
 
-#: .\user\views.py:79
+#: .\user\views.py:85
 msgid "Last name cannot be empty"
 msgstr "Le nom de famille ne peut pas être vide"
 
-#: .\user\views.py:91
+#: .\user\views.py:97
 msgid "Password cannot be empty"
 msgstr "Le mot de passe ne peut pas être vide"
 
-#: .\user\views.py:95
+#: .\user\views.py:101
 msgid "Password should have at least 8 characters"
 msgstr "Le mot de passe doit comporter au moins 8 caractères"
 
-#: .\user\views.py:134
+#: .\user\views.py:143
 msgid "User was not created please try again"
 msgstr "L'utilisateur n'a pas été créé, veuillez réessayer"
 
-#: .\user\views.py:148
+#: .\user\views.py:157
 msgid "User does not exist"
 msgstr "L'utilisateur n'existe pas"
 
-#: .\user\views.py:248
+#: .\user\views.py:291
 msgid "Email"
 msgstr "Email"
 
-#: .\user\views.py:263
+#: .\user\views.py:306
 msgid "Birthday"
 msgstr "Anniversaire"
 
-#: .\user\views.py:264
+#: .\user\views.py:307
 msgid "Gender"
 msgstr "Genre"
 
-#: .\user\views.py:264
+#: .\user\views.py:307
 msgid "Male"
 msgstr "Male"
 
-#: .\user\views.py:264
+#: .\user\views.py:307
 msgid "Female"
 msgstr "Femelle"
 
-#: .\user\views.py:268
+#: .\user\views.py:311
 msgid "State"
 msgstr "État"
 
-#: .\user\views.py:269
+#: .\user\views.py:312
 msgid "City"
 msgstr "Ville"
 
-#: .\user\views.py:270
+#: .\user\views.py:313
 msgid "Address"
 msgstr "Adresse"
 
-msgid "User"
-msgstr "Utilisateur"
+#~ msgid "User"
+#~ msgstr "Utilisateur"
 
-msgid "Article"
-msgstr "Article"
+#~ msgid "Article"
+#~ msgstr "Article"
 
-msgid "Comment"
-msgstr "le commentaire"
+#~ msgid "Comment"
+#~ msgstr "le commentaire"

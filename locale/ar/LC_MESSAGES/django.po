@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-15 22:45+0000\n"
+"POT-Creation-Date: 2024-03-29 14:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,40 +19,40 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: .\ch7almachya\views.py:106 .\ch7almachya\views.py:127
+#: .\ch7almachya\views.py:104 .\ch7almachya\views.py:124
 msgid "No user exists with that email or username"
 msgstr "لا يوجد مستخدم بهذا البريد الإلكتروني أو اسم المستخدم هذا"
 
-#: .\ch7almachya\views.py:125
+#: .\ch7almachya\views.py:122
 msgid "We have sent an email with the verification link to the email of \"{}\""
 msgstr ""
 "لقد أرسلنا بريدًا إلكترونيًا يحتوي على رابط التحقق إلى البريد الإلكتروني \"{}\""
 
-#: .\ch7almachya\views.py:150
+#: .\ch7almachya\views.py:149
 msgid "Password reset successfully"
 msgstr "تم إعادة تعيين كلمة المرور بنجاح"
 
-#: .\ch7almachya\views.py:152
+#: .\ch7almachya\views.py:151
 msgid "Error"
 msgstr "خطأ"
 
-#: .\ch7almachya\views.py:174
+#: .\ch7almachya\views.py:168
 msgid "You have to be logged to report this {}"
 msgstr "يجب عليك التسجيل للإبلاغ عن هذا {}"
 
-#: .\ch7almachya\views.py:200
+#: .\ch7almachya\views.py:190
 msgid "You have already repoted this {}"
 msgstr "لقد قمت بالإبلاغ عن هذا {} بالفعل"
 
-#: .\ch7almachya\views.py:201
+#: .\ch7almachya\views.py:196
 msgid "Your report was submited successfully"
 msgstr "تم إرسال تبليغ بنجاح"
 
-#: .\ch7almachya\views.py:216
+#: .\ch7almachya\views.py:210
 msgid "Your message was sent successfully"
 msgstr "لقد تم ارسال رسالتك بنجاح"
 
-#: .\ch7almachya\views.py:218
+#: .\ch7almachya\views.py:212
 msgid ""
 "Your message was not sent, please make sure that all field are filled and "
 "your email is corret."
@@ -60,15 +60,15 @@ msgstr ""
 "لم يتم إرسال رسالتك، يرجى التأكد من ملء كافة الحقول و أن بريدك الإلكتروني "
 "صحيح."
 
-#: .\dashboard\views.py:27
+#: .\dashboard\views.py:28
 msgid "You cannot create more than 20 articles in the basic plan"
 msgstr "لا يمكنك إنشاء أكثر من 20 مقالة في الخطة الأساسية"
 
-#: .\dashboard\views.py:32 .\dashboard\views.py:193
+#: .\dashboard\views.py:33 .\dashboard\views.py:193
 msgid "Title cannot be empty"
 msgstr "لا يمكن أن يكون العنوان فارغًا"
 
-#: .\dashboard\views.py:109
+#: .\dashboard\views.py:110
 msgid "The images you sent were not recognized please try again"
 msgstr "لم يتم التعرف على الصور التي أرسلتها يرجى المحاولة مرة أخرى"
 
@@ -80,100 +80,104 @@ msgstr "لم يتم قبول صورك، يرجى استخدام صور أخرى 
 msgid "Your artcile was created successfully"
 msgstr "تم إنشاء مقالتك بنجاح"
 
-#: .\dashboard\views.py:307
+#: .\dashboard\views.py:313
 msgid "Your artcile was updated successfully"
 msgstr "تم تحديث مقالتك بنجاح"
 
-#: .\dashboard\views.py:340
+#: .\dashboard\views.py:344
 msgid "the article \"{} - {}\" has been deleted successfully"
 msgstr "تم حذف المقالة \"{} - {}\" بنجاح"
 
-#: .\dashboard\views.py:343
+#: .\dashboard\views.py:347
 msgid "Article was not deleted"
 msgstr "لم يتم حذف المقال"
 
-#: .\others\serializers.py:38 .\others\signals.py:17
+#: .\functions.py:39
+msgid "Message from ch7al machya"
+msgstr "رسالة من شحال ماشيا"
+
+#: .\others\serializers.py:41 .\others\signals.py:20
 msgid "has liked your article \"{}\""
 msgstr "قد أعجب بمقالتك \"{}\""
 
-#: .\others\serializers.py:41 .\others\signals.py:19
+#: .\others\serializers.py:44 .\others\signals.py:23
 msgid "has disliked your article \"{}\""
 msgstr "لم يعجبه مقالك \"{}\""
 
-#: .\others\serializers.py:44 .\others\signals.py:21
+#: .\others\serializers.py:47 .\others\signals.py:26
 msgid "has commented your article \"{}\""
 msgstr "لقد علق على مقالتك \"{}\""
 
-#: .\others\serializers.py:47 .\others\signals.py:23
+#: .\others\serializers.py:50 .\others\signals.py:29
 msgid "has started following you"
 msgstr "لقد بدأ بمتابعتك"
 
-#: .\others\serializers.py:50 .\others\signals.py:25
+#: .\others\serializers.py:53 .\others\signals.py:32
 msgid "has posted an article \"{}\""
 msgstr "لقد نشر مقالاً \"{}\""
 
-#: .\settings\views.py:61
+#: .\settings\views.py:66
 msgid "Your profile information was not updated"
 msgstr "لم يتم تحديث معلومات ملفك الشخصي"
 
-#: .\settings\views.py:80
+#: .\settings\views.py:85
 msgid "Your profile location was not updated"
 msgstr "لم يتم تحديث موقع ملفك الشخصي"
 
-#: .\settings\views.py:96
+#: .\settings\views.py:100
 msgid "Page name cannot be empty"
 msgstr "لا يمكن أن يكون اسم الصفحة فارغًا"
 
-#: .\settings\views.py:108
+#: .\settings\views.py:114
 msgid "Your page information was not updated"
 msgstr "لم يتم تحديث معلومات صفحتك"
 
-#: .\settings\views.py:153
+#: .\settings\views.py:159
 msgid "Your account information was not updated"
 msgstr "لم يتم تحديث معلومات صفحتك"
 
-#: .\settings\views.py:187
+#: .\settings\views.py:193
 msgid "Your socials were not updated"
 msgstr "لم يتم تحديث حساباتك الاجتماعية"
 
-#: .\settings\views.py:227
+#: .\settings\views.py:235
 msgid "Your profile picture was not updated"
 msgstr "لم يتم تحديث صورة ملفك الشخصي"
 
-#: .\settings\views.py:245
+#: .\settings\views.py:253
 msgid "Your profile picture was not deleted"
 msgstr "لم يتم حذف صورة ملفك الشخصي"
 
-#: .\settings\views.py:255
+#: .\settings\views.py:262
 msgid "This email \"{}\" is already used, please use another email"
 msgstr ""
 "هذا البريد الإلكتروني \"{}\" مستخدم بالفعل، يرجى استخدام بريد إلكتروني آخر"
 
-#: .\settings\views.py:262
+#: .\settings\views.py:269
 msgid "Your email \"{}\" is set successfully"
 msgstr "تم تعيين بريدك الإلكتروني \"{}\" بنجاح"
 
-#: .\settings\views.py:267
+#: .\settings\views.py:275
 msgid "This email \"{}\" has a wrong format"
 msgstr "هذا البريد الإلكتروني \"{}\" به تنسيق خاطئ"
 
-#: .\settings\views.py:276
+#: .\settings\views.py:284
 msgid "This email \"{}\" is used, please use a another email"
 msgstr "هذا البريد الإلكتروني \"{}\" مستخدم، يرجى استخدام بريد إلكتروني آخر"
 
-#: .\settings\views.py:279
+#: .\settings\views.py:287
 msgid "New email is the same as the current email"
 msgstr "البريد الإلكتروني الجديد هو نفس البريد الإلكتروني الحالي"
 
-#: .\settings\views.py:288
+#: .\settings\views.py:296
 msgid "Your email is updated successfully from \"{}\" to \"{}\""
 msgstr "تم تحديث بريدك الإلكتروني بنجاح من \"{}\" إلى \"{}\""
 
-#: .\settings\views.py:311
+#: .\settings\views.py:320
 msgid "We sent the activation link to your email \"{}\""
 msgstr "لقد أرسلنا رابط التفعيل إلى بريدك الإلكتروني \"{}\""
 
-#: .\settings\views.py:314
+#: .\settings\views.py:323
 msgid ""
 "Email verification failed, please try again. If this problem still occurs "
 "please contact our customer service"
@@ -181,103 +185,155 @@ msgstr ""
 "فشل التحقق من البريد الإلكتروني، يرجى المحاولة مرة أخرى. إذا استمرت هذه "
 "المشكلة يرجى الاتصال بخدمة العملاء لدينا"
 
-#: .\settings\views.py:324
+#: .\settings\views.py:333
 msgid "Email was deleted successfully"
 msgstr "تم حذف البريد الإلكتروني بنجاح"
 
-#: .\settings\views.py:352
+#: .\settings\views.py:360
 msgid "Current password is wrong"
 msgstr "كلمة المرور الحالية خاطئة"
 
-#: .\settings\views.py:356
+#: .\settings\views.py:364
 msgid "New password cannot be empty"
 msgstr "لا يمكن أن تكون كلمة المرور الجديدة فارغة"
 
-#: .\settings\views.py:360
+#: .\settings\views.py:368
 msgid "New password should have at least 8 characters"
 msgstr "كلمة المرور الجديدة يجب أن تتكون من 8 أحرف على الأقل"
 
-#: .\settings\views.py:364 .\user\views.py:99
+#: .\settings\views.py:372 .\user\views.py:105
 msgid "Passwords Do not match"
 msgstr "كلمة المرور غير مطابقة"
 
-#: .\settings\views.py:369
+#: .\settings\views.py:379
 msgid "Your password have been updated successfully"
 msgstr "تم تحديث كلمة المرور الخاصة بك بنجاح"
 
-#: .\settings\views.py:378
+#: .\settings\views.py:388
 msgid "Your account was deleted successfully"
 msgstr "تم حذف حسابك بنجاح"
 
-#: .\settings\views.py:381
+#: .\settings\views.py:391
 msgid "The account you want to delete was not found"
 msgstr "لم يتم العثور على الحساب الذي تريد حذفه"
 
-#: .\settings\views.py:393 .\user\views.py:83
+#: .\settings\views.py:403 .\user\views.py:89
 msgid "Username field cannot be empty"
 msgstr "حقل اسم المستخدم لا يمكن أن يكون فارغا"
 
-#: .\settings\views.py:397 .\user\views.py:87
+#: .\settings\views.py:407 .\user\views.py:93
 msgid "This username {} is taken"
 msgstr "اسم المستخدم هذا {} مأخوذ"
 
-#: .\user\views.py:55
+#: .\staff\views.py:77
+msgid "Your comment \"{}\" was deleted"
+msgstr "تم حذف حسابك"
+
+#: .\staff\views.py:85
+msgid ""
+"Your report on the comment of user @{} was accepted and we deleted his comment. Thank you for making Ch7al machya a safer place"
+msgstr ""
+"تم قبول بلاغك عن تعليق المستخدم @{} وحذفنا تعليقه. شكرًا لك لجعل شحال مكانًا أكثر أمانًا"
+
+#: .\staff\views.py:94
+msgid "Your article \"{}\" was deleted"
+msgstr "يتم حذف المقال"
+
+#: .\staff\views.py:102
+msgid ""
+"Your report on the article of user @{} was accepted and we deleted his "
+"article. Thank you for making Ch7al machya a safer place"
+msgstr ""
+"تم قبول بلاغك عن مقال المستخدم @{} وقمنا بحذفه مقالة. شكرًا لك على جعل Ch7al "
+"machya مكانًا أكثر أمانًا"
+
+#: .\staff\views.py:120
+msgid ""
+"Your report on the user @{} was accepted and we deleted his account. Thank "
+"you for making Ch7al machya a safer place"
+msgstr ""
+"تم قبول بلاغك عن المستخدم @{} وحذفنا حسابه. شكرًا "
+"على جعل شحال ماشيا مكانًا أكثر أمانًا"
+
+#: .\staff\views.py:149
+msgid ""
+"Your report on the comment \"{}\" was reviewed and we decided not to delete "
+"his comment."
+msgstr "تمت مراجعة بلاغك الخاص بالتعليق \"{}\" وقررنا عدم الحذف تعليقه."
+
+#: .\staff\views.py:159
+msgid ""
+"Your report on the article \"{}\" was reviewed and we decided no to delete "
+"his article."
+msgstr "لقد تمت مراجعة بلاغك عن المقال \"{}\" وقررنا عدم الحذف مقالته."
+
+#: .\staff\views.py:169
+msgid ""
+"Your report on the user @{} was reviewed and we decided not to delete his "
+"account."
+msgstr "لقد تمت مراجعة بلاغك الخاص بالمستخدم @{} وقررنا عدم حذفه حساب."
+
+#: .\user\views.py:58
+msgid "Your account has been deleted."
+msgstr "تم حذف حسابك"
+
+#: .\user\views.py:62
 msgid "There is no user with this username and password."
 msgstr "لا يوجد مستخدم باسم المستخدم وكلمة المرور هذا."
 
-#: .\user\views.py:75
+#: .\user\views.py:81
 msgid "First name cannot be empty"
 msgstr "لا يمكن أن يكون الاسم الأول فارغًا"
 
-#: .\user\views.py:79
+#: .\user\views.py:85
 msgid "Last name cannot be empty"
 msgstr "لا يمكن أن يكون الاسم الأخير فارغًا"
 
-#: .\user\views.py:91
+#: .\user\views.py:97
 msgid "Password cannot be empty"
 msgstr "لا يمكن أن تكون كلمة المرور فارغة"
 
-#: .\user\views.py:95
+#: .\user\views.py:101
 msgid "Password should have at least 8 characters"
 msgstr "كلمة المرور يجب أن تتكون من 8 أحرف على الأقل"
 
-#: .\user\views.py:134
+#: .\user\views.py:143
 msgid "User was not created please try again"
 msgstr "كلمة المرور يجب أن تتكون من 8 أحرف على الأقل"
 
-#: .\user\views.py:148
+#: .\user\views.py:157
 msgid "User does not exist"
 msgstr "المستخدم غير موجود"
 
-#: .\user\views.py:248
+#: .\user\views.py:291
 msgid "Email"
 msgstr "بريد الكتروني"
 
-#: .\user\views.py:263
+#: .\user\views.py:306
 msgid "Birthday"
 msgstr "عيد ميلاد"
 
-#: .\user\views.py:264
+#: .\user\views.py:307
 msgid "Gender"
 msgstr "جنس"
 
-#: .\user\views.py:264
+#: .\user\views.py:307
 msgid "Male"
 msgstr "ذكر"
 
-#: .\user\views.py:264
+#: .\user\views.py:307
 msgid "Female"
 msgstr "أنثى"
 
-#: .\user\views.py:268
+#: .\user\views.py:311
 msgid "State"
 msgstr "ولاية"
 
-#: .\user\views.py:269
+#: .\user\views.py:312
 msgid "City"
 msgstr "مدينة"
 
-#: .\user\views.py:270
+#: .\user\views.py:313
 msgid "Address"
 msgstr "عنوان"
 

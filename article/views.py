@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 import time, json, os
 from django.http import JsonResponse, HttpResponse
-from others.models import State
+from others.models import Notification
 from .models import Article, Image, Comment, Option, SavedArticle, Like, Dislike, Color, Document, Fuel, GearBox
 from PIL import Image as IM
 from ch7almachya.settings import MEDIA_ROOT
@@ -25,7 +25,7 @@ current_year = str(datetime.now().year)
 def get_article(request):
     try:
         article = Article.objects.get(id=request.GET.get('id'))
-        article.notification_set.all().update(is_seen=True, is_acknowledged=True)
+        article.notification_set.filter(comment=None).update(is_seen=True, is_acknowledged=True)
         articleSerialized = ArticlePageSerializer(article, many=False, context={'user' : request.user.is_authenticated and request.user}).data
         new_views_count =  article.views +1
         article.views = new_views_count
@@ -388,4 +388,5 @@ def get_comment(request):
     comment_id = request.GET.get('comment_id')
     comment = Comment.objects.get(id=comment_id)
     serializer = CommentSerializer(comment).data
+    Notification.objects.filter(comment = comment).update(is_seen=True)
     return Response([serializer, comment.article.slug])

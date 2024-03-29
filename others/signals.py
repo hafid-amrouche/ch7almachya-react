@@ -24,7 +24,7 @@ def update_user_notifications(sender, instance, created, **kwargs):
                 link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/'
             elif notification_type == 'comment':
                 text = _('has commented your article "{}"').format(notification.article.title)
-                link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/'
+                link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/{notification.comment.id}/'
             elif notification_type == 'follow':
                 text = _('has started following you')
                 link = f'/@{notification.notifier.username}/'
