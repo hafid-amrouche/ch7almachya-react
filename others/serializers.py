@@ -27,7 +27,7 @@ class NotificationSerializer(serializers.ModelSerializer):
             return f'/@{obj.notified.username}/{obj.article.brand.name.lower()}-{obj.article.title}-{obj.article.id}/'
         elif obj.notification_type == 'comment':
             return f'/@{obj.notifier.username}/{obj.article.brand.name.lower()}-{obj.article.title}-{obj.article.id}/{obj.comment.id}/'
-        elif obj.notification_type == 'leader_posted':
+        elif obj.notification_type in ['leader_posted','article_updated', 'article_created']:
             return f'/@{obj.notifier.username}/{obj.article.brand.name.lower()}-{obj.article.title}-{obj.article.id}/'
         elif obj.notification_type == 'follow':
             return f'/@{obj.notifier.username}/'

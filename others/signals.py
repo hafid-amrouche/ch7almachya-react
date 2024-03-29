@@ -13,26 +13,30 @@ def update_user_notifications(sender, instance, created, **kwargs):
         title = notification.notifier.page.name if notification.notifier.extention.is_page else notification.notifier.get_full_name()
 
         notification_type = notification.notification_type
-        text = notification.text
-        link= ''
-        if not text:
-            if notification_type == 'like':
-                text = _('has liked your article "{}"').format(notification.article.title)
-                link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/'
-            elif notification_type == 'dislike':
-                text = _('has disliked your article "{}"').format(notification.article.title)
-                link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/'
-            elif notification_type == 'comment':
-                text = _('has commented your article "{}"').format(notification.article.title)
-                link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/{notification.comment.id}/'
-            elif notification_type == 'follow':
-                text = _('has started following you')
-                link = f'/@{notification.notifier.username}/'
-            elif notification_type == 'leader_posted':
-                text = _('has posted an article "{}"').format(notification.article.title)
-                link = f'/@{notification.notifier.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}'
-            else:
-                text = ''
+        if notification_type == 'like':
+            text = _('has liked your article "{}"').format(notification.article.title)
+            link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/'
+        elif notification_type == 'dislike':
+            text = _('has disliked your article "{}"').format(notification.article.title)
+            link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/'
+        elif notification_type == 'comment':
+            text = _('has commented your article "{}"').format(notification.article.title)
+            link = f'/@{notification.notified.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}/{notification.comment.id}/'
+        elif notification_type == 'follow':
+            text = _('has started following you')
+            link = f'/@{notification.notifier.username}/'
+        elif notification_type  == 'leader_posted':
+            text = _('has posted an article "{}"').format(notification.article.title)
+            link = f'/@{notification.notifier.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}'
+        elif notification_type in ['article_updated', 'article_created']:
+            text = notification.text
+            link = f'/@{notification.notifier.username}/{notification.article.brand.name.lower()}-{notification.article.title}-{notification.article.id}'
+        elif notification_type in ['your_reported_comment_deleted', 'your_reported_article_not_deleted', 'your_reported_user_not_deleted', 'your_reported_comment_deleted', 'your_article_deleted', 'your_reported_article_deleted']:
+            text = notification.text
+            text = ''
+        else:
+            link = ''
+            text = ''
                 
         icon = notification.notifier.extention.image_150
         send(notification.notified, title=title, body=text, link=link, icon=icon, type=f'{notification.notification_type}-{ notification.notifier.id }')

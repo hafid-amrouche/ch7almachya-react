@@ -3,21 +3,23 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 import json, os
 from django.http import JsonResponse
 from django.utils.text import slugify
-from others.models import State
+from others.models import State, Notification
 from article.models import Article, Image, Option, ArticleSuggestion, MainImage, Brand, Category
 from PIL import Image as IM
 from ch7almachya.settings import BASE_DIR
 from article.serializers import ArticleCardB, EditArticleSerializer
-import time
 from rest_framework.response import Response
 from datetime import datetime
 from django.utils.translation import gettext as _
 from django.utils import timezone
+from user.models import User
 
 
 current_year = datetime.now().year
 
 # Create your views here.
+
+admin = User.objects.get(username='ch7almachya')
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -168,10 +170,16 @@ def create_article(request):
 
         message= {  
             'detail' : {
-                'message' : _('Your artcile was created successfully'),
                 'url' : article.slug
             }
         }
+        Notification.objects.create(
+            notification_type = 'article_created',
+            notifier=admin,
+            notified=request.user,
+            article=article,
+            text = _('Your artcile was created successfully')
+        )
         return JsonResponse(message, safe=False)
     except Exception as e:
         try:
@@ -310,10 +318,16 @@ def update_article(request):
         
         message= {  
             'detail' : {
-                'message' : _('Your artcile was updated successfully'),
                 'url' : article.slug
             }
         }
+        Notification.objects.create(
+            notification_type = 'article_updated',
+            notifier=admin,
+            notified=request.user,
+            article=article,
+            text = _('Your artcile was updated successfully')
+        )
         return JsonResponse(message, safe=False)
     except Exception as e:
         message = {'detail':str(e)}
