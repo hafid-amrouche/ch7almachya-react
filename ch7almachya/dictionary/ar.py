@@ -226,6 +226,7 @@ dictionary_ar ={
     'For sale at Ch7al Machya':'للبيع على شحال ماشيا',
     'is on Ch7al machya': 'ناشط على شحال ماشيا',
     'Active' : 'مفعل',
-    'This username is taken' : 'أسم المستخدم مأخوذ مسبقا'
+    'This username is taken' : 'أسم المستخدم مأخوذ مسبقا',
+    'Your article is loading...' : "جاري تحميل منشورك..."
 
 }

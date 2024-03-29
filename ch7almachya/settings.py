@@ -14,6 +14,11 @@ from pathlib import Path
 from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate(BASE_DIR / 'ch7almachya/ch7al-machya-firebase-adminsdk-kjgyl-f37564c21f.json')
+firebase_admin.initialize_app(cred)
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +30,7 @@ SECRET_KEY = 'django-insecure-c1keeb^z3+rzg@0s26)$md87kjdhf%_8@_%w!w7zh!^=-uyyc)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hafiddjango.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['hafiddjango.pythonanywhere.com', '*']
 
 
 # Application definition
@@ -48,6 +53,7 @@ INSTALLED_APPS = [
     'settings.apps.SettingsConfig',
     'dashboard.apps.DashboardConfig',
     'messaging.apps.MessagingConfig',
+    'staff.apps.StaffConfig',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +74,7 @@ ROOT_URLCONF = 'ch7almachya.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ BASE_DIR / 'templates', BASE_DIR / 'react/build'],
+        'DIRS': [ BASE_DIR / 'templates', BASE_DIR / 'react/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,7 +153,8 @@ USE_L10N = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'react/build/static'
+    BASE_DIR / 'react/users/static',
+    BASE_DIR / 'react/staff/static'
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -165,8 +172,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    'https://hafiddjango.pythonanywhere.com'
+    'https://hafiddjango.pythonanywhere.com',
+    'http://localhost:8080'
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 #########################
 # User Token customization

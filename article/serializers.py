@@ -69,6 +69,10 @@ class ArticlePageSerializer(serializers.ModelSerializer):
         creator = obj.creator
         return {'text' :creator.page.name, 'is_verified': creator.page.is_verified } if creator.extention.is_page else creator.get_full_name()
     
+    creator_username = serializers.SerializerMethodField(read_only=True)
+    def get_creator_username(self, obj):
+        return obj.creator.username
+    
     creator_image = serializers.SerializerMethodField(read_only=True)
     def get_creator_image(self, obj):
         return obj.creator.extention.image_150
@@ -111,7 +115,7 @@ class ArticlePageSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Article
-        fields = ['id', 'info', 'likes_count', 'dislikes_count', 'options', 'created_at', 'creator_name', 'images', 'phone_numbers_list', 'description', 'creator_image', 'creator_id', 'is_saver', 'is_liker', 'is_disliker']
+        fields = ['id', 'info', 'likes_count', 'dislikes_count', 'options', 'created_at', 'creator_name', 'creator_username', 'images', 'phone_numbers_list', 'description', 'creator_image', 'creator_id', 'is_saver', 'is_liker', 'is_disliker']
 
 class ArticleCardA(serializers.ModelSerializer):
     url = serializers.SerializerMethodField(read_only=True)

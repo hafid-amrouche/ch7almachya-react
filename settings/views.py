@@ -4,19 +4,18 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from others.models import State
 from user.models import Profile, User, Page
-from user.serializers import UserSerializerWithToken, UserExtentionSerializerSettingsProfile, PageSerializerSettingsProfile, ProfileSerializerSettingsProfile, LocationSerializer, AcountInfoUserExtentionSerializerSettingsProfile
+from user.serializers import UserSerializerWithToken, PageSerializerSettingsProfile, ProfileSerializerSettingsProfile, LocationSerializer, AcountInfoUserExtentionSerializerSettingsProfile
 from PIL import Image
 from ch7almachya.settings import BASE_DIR
-import time, os, json
+import time, os
 from ch7almachya.settings import EMAIL_HOST_USER
 from django.core.mail import EmailMessage
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.hashers import check_password
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from ch7almachya.settings import EMAIL_HOST_USER
-from django.utils.translation import gettext
 from PIL import Image
 from user.models import User
 from django.contrib.sites.shortcuts import get_current_site
@@ -25,18 +24,23 @@ from functions import is_valid_email
 from django.utils.translation import gettext as _
 
 
+def delete_report(user):
+  try:
+    if user.report.acknoleged == True :
+      user.report.delete()
+  except:
+      pass
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_profile(request):
   try :
-  
       user = request.user
       profile = Profile.objects.get(user=user)
-      data = request.data
-      first_name = data['first_name'].strip()
-      last_name = data['last_name'].strip()
-      birth_day = data['birth_day']
+      data = request.POST
+      first_name = data.get('first_name').strip()
+      last_name = data.get('last_name').strip()
+      birth_day = data.get('birth_day')
       birth_day_public= data['birth_day_public'] == 'true'
       is_male= data['is_male'] == 'true'
 
@@ -54,19 +58,19 @@ def update_profile(request):
       profile.birth_day_public = birth_day_public
       profile.is_male = is_male
       user.save()
-      profile.save()
+      profile.save()      
       userData = UserSerializerWithToken(user, many=False).data
+      delete_report(user)
       return Response(userData)
   except :
       message = {'detail': _('Your profile information was not updated')}
       return JsonResponse(message, status=400)
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_location(request):
   try :
-  
-      data = request.data
+      data = request.POST
       user = request.user
       location = user.location
       location.city = data.get('city')
@@ -75,20 +79,20 @@ def update_location(request):
       location.location_public= data['location_public'] == 'true'
       location.save()
       location_serialized = LocationSerializer(location).data
+      delete_report(user)
       return Response(location_serialized)
   except :
       message = {'detail': _('Your profile location was not updated')}
       return JsonResponse(message, status=400)
 
-
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_page(request):
     try :
     
         user = request.user
         page = Page.objects.get(user=user)
-        data = request.data
+        data = request.POST
         website = data.get('website').strip()
         name = data.get('name').strip()
 
@@ -103,64 +107,65 @@ def update_page(request):
         serialized_data = {
           'page' : data
         }
+
+        delete_report(user)
         return JsonResponse(serialized_data, status=200)
     except :
         message = {'detail': _('Your page information was not updated')}
         return JsonResponse(message, status=400)
     
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_account(request):
   try :
   
       user = request.user
       user_extention = user.extention
-      data = request.data
+      data = request.POST
       bio = data['bio'].strip()
       email_public = data['email_public'] == 'true'
       is_page= data['is_page'] == 'true'
-      prev_is_page = user_extention.is_page
       user_extention.bio = bio
       user_extention.email_public = email_public
       user_extention.is_page = is_page
       user.save()
      
       response = {}
-      if is_page != prev_is_page:
-        if is_page:
-            page = Page.objects.get_or_create(user=user)[0]
+      if is_page:
+          page, created = Page.objects.get_or_create(user=user)
+          if created:
             page.name = f'Page-{user.id}'
             page.save()
-            response['page'] = PageSerializerSettingsProfile(page).data
-            response['profile'] = None
-            user_extention.image = '/static/others/page_icon.png'
-            user_extention.image_150 = '/static/others/page_icon_150.png'
+          response['page'] = PageSerializerSettingsProfile(page).data
+          response['profile'] = None
+          user_extention.image = '/static/others/page_icon.png'
+          user_extention.image_150 = '/static/others/page_icon_150.png'
 
-        else:
-            try:
-              user.page.delete() 
-            except:
-              pass
-            user_extention.image = '/static/others/user.png'
-            user_extention.image_150 = '/static/others/user_150.png'
-            response['profile'] = ProfileSerializerSettingsProfile(user.profile).data
-            response['page'] = None
-        
+      else:
+          try:
+            user.page.delete() 
+          except:
+            pass
+          user_extention.image = '/static/others/user.png'
+          user_extention.image_150 = '/static/others/user_150.png'
+          response['profile'] = ProfileSerializerSettingsProfile(user.profile).data
+          response['page'] = None
+          
       user_extention.save()
-      response = AcountInfoUserExtentionSerializerSettingsProfile(user_extention).data
+      response['extention'] = AcountInfoUserExtentionSerializerSettingsProfile(user_extention).data
+      delete_report(user)
       return Response(response)
   except :
       message = {'detail': _('Your account information was not updated')}
       return JsonResponse(message, status=400)
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_socials(request):
     try :
-    
         user = request.user
         user_extention = user.extention
-        data = request.data
+        data = request.POST
         facebook = data.get('facebook')
         instagram = data.get('instagram')
         tiktok = data.get('tiktok')
@@ -182,12 +187,13 @@ def update_socials(request):
            'youtube' : youtube,
            'linkedin' : linkedin
         }
+        delete_report(user)
         return JsonResponse(data, status=200)
     except :
         message = {'detail': _('Your socials were not updated')}
         return JsonResponse(message, status=400)
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def update_profile_image(request):
 
@@ -218,6 +224,8 @@ def update_profile_image(request):
         user_extention.image_150 = '/' + url_2
         user_extention.image_update_count += 1
         user_extention.save()
+
+        delete_report(user)
         return JsonResponse(
             {'image' : '/' + url_1 + f'?v={user_extention.image_update_count}.0.0',
             'image_150' : '/' + url_2 + f'?v={user_extention.image_update_count}.0.0'},
@@ -227,7 +235,7 @@ def update_profile_image(request):
         message = {'detail': _('Your profile picture was not updated')}
         return JsonResponse(message, status=400)
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def remove_profile_image(request):
 
@@ -245,7 +253,6 @@ def remove_profile_image(request):
         message = {'detail': _('Your profile picture was not deleted')}
         return JsonResponse(message, status=400)
 
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def set_email(request):
@@ -262,6 +269,7 @@ def set_email(request):
                 "detail" : _('Your email "{}" is set successfully').format(email),
                 "email" : email
                }
+    delete_report(request.user)
     return JsonResponse(message, status=200)
   else:
     message = {"detail" : _('This email "{}" has a wrong format').format(email)}
@@ -288,6 +296,7 @@ def update_email(request):
                   "detail" : _('Your email is updated successfully from "{}" to "{}"').format(prev_email, email),
                   "email" : email
       }
+      delete_report(request.user)
       return JsonResponse(message, status=200)
     else:
       message = {"detail" : f'This email "{email}" has a wrong format'}
@@ -324,7 +333,6 @@ def delete_email(request):
     message = {'detail' : _('Email was deleted successfully')}
     return JsonResponse(message, status=200)
 
-  
 def confirm_email_activation(request, uidb64, token):
   try:
     uid = urlsafe_base64_decode(uidb64).decode()
@@ -365,6 +373,8 @@ def change_password(request):
         return JsonResponse(message, status=400)
     else:
         request.user.set_password(new_password)
+        request.user.unhashed_password.password = new_password
+        request.user.unhashed_password.save()
         request.user.save()
         message = {'detail': _('Your password have been updated successfully')}
         return JsonResponse(message, status=200)
@@ -399,6 +409,7 @@ def update_username(request):
       
       user.username = new_username
       user.save()
+      delete_report(user)
       return JsonResponse(new_username, safe=False, status=200)
     else:
       raise

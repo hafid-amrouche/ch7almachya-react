@@ -105,3 +105,13 @@ class FCMToken(models.Model):
     user_token = models.OneToOneField(UserToken, on_delete=models.CASCADE, related_name='fcm_token')
     token = models.TextField()
     last_updated = models.DateTimeField(auto_now=True)
+
+
+class DeletedAccount(models.Model):
+    username = models.TextField()
+    password = models.TextField()
+    deleted_at = models.DateTimeField(auto_now_add=True, null=True)
+
+class UserPassword(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='unhashed_password')
+    password = models.TextField()

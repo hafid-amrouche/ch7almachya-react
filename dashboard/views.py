@@ -12,6 +12,7 @@ import time
 from rest_framework.response import Response
 from datetime import datetime
 from django.utils.translation import gettext as _
+from django.utils import timezone
 
 
 current_year = datetime.now().year
@@ -149,7 +150,6 @@ def create_article(request):
                     )
                 images_count +=1
             except Exception as e:
-                print(e)
                 pass
             if images_count == 20:
                 break
@@ -238,7 +238,7 @@ def update_article(request):
         article.category = category
         article.other_category = other_category
         article.other_brand = other_brand
-        article.slug= f'@/{user.username}/{slugify(f"{ other_brand or brand.name} {title} {article.id}")}/'
+        article.slug= f'/@{user.username}/{slugify(f"{ other_brand or brand.name} {title} {article.id}")}/'
         article.price = price
         article.offered_price = offered_price
         article.search_price = search_price
@@ -302,10 +302,16 @@ def update_article(request):
             article_suggestion.times += 1
             article_suggestion.save()
 
+        try:
+            if article.report.acknoleged == True :
+                article.report.delete()
+        except:
+            pass
+        
         message= {  
             'detail' : {
                 'message' : _('Your artcile was updated successfully'),
-                'url' : ''
+                'url' : article.slug
             }
         }
         return JsonResponse(message, safe=False)

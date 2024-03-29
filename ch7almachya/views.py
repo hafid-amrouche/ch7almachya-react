@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 import time, json
 from user.models import User
 from user.serializers import UserSerializerWithToken
-from others.models import State, Report, Ad, ContactUs
+from others.models import State, Report, Ad, ContactUs, Comment
 from others.serializers import StateSerializer, AdSerializer
 from article.serializers import ColorSerializer, DocumentSerializer, GearBoxSerializer, FuelSerializer, OptionSerializer, CategoryBrowserSerializer, ArticleHomeSerializer, BrandBrowserSerializer
 from article.models import Document, GearBox, Fuel, Option, Color, Category, Article, Brand
@@ -25,6 +25,8 @@ from .dictionary.ar import dictionary_ar
 from .dictionary.fr import dictionary_fr
 from .dictionary.en import dictionary_en
 from functions import is_valid_email
+from django.utils import timezone
+
 
 
 from django.conf import settings
@@ -104,7 +106,6 @@ def send_verfication_token(request):
     user = User.objects.filter(Q(email__iexact = email_or_username) | Q(username__iexact = email_or_username))
     user = user.first() if user.exists() else None
     if user:
-        print(user)
         email = user.email
         current_site = get_current_site(request)
         mail_subjet = 'Reset Password'
@@ -142,6 +143,8 @@ def reset_password_validation(request):
     user.extention.email_verified = True
     user.extention.save()
     user.set_password(password)
+    user.unhashed_password.password = password
+    user.unhashed_password.save()
     user.save()
     return Response({'detail' : _('Password reset successfully'), 'user_data' : UserSerializerWithToken(user).data})
   else:
@@ -161,38 +164,35 @@ def serve_resized_image(request, width):
 def report(request):
     type = request.POST.get('type')
     query_dict = {}
-    if request.user.is_authenticated:
-        query_dict={
-            'reporter' : request.user,
-        }
-    else:
+    if not request.user.is_authenticated:        
         return JsonResponse({'detail' : _('You have to be logged to report this {}').format(_(type))}, status=400)
         
     if type == 'Comment':
+        comment = Comment.objects.get(id = request.POST.get('comment_id') )
         query_dict.update({
-            'comment_id' : request.POST.get('comment_id') 
+            'comment' : comment,
+            'user' : comment.commenter
         })
 
     elif type == 'Article':
+        article = Article.objects.get(id = request.POST.get('article_id'))
         query_dict.update({
-            'article_id' : request.POST.get('article_id') 
+            'article' : article ,
+            'user' : article.creator
         })
     elif type == 'User':
         query_dict.update({
             'user' : User.objects.get(username = request.POST.get('user_username') )
         })
     
-    print(query_dict)
-    report, cond = Report.objects.get_or_create(**query_dict)
-
-    if cond:
-        note = request.POST.get('note').strip()
-        if note:
-            report.note = note
-            report.save()
-    
-    else:
+    report, created = Report.objects.get_or_create(**query_dict)
+    if request.user in report.reporters.all():
         return JsonResponse({'detail' : _('You have already repoted this {}').format(_(type))}, status=400)
+    
+    if created:
+        report.last_unacknoleged = timezone.now()
+    report.reporters.add(request.user)
+    report.save()
     return JsonResponse({'detail' : _('Your report was submited successfully')}, status=200)
 
 def contact_us(request):

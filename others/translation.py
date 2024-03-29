@@ -3,9 +3,5 @@ from .models import State
 
 
 @register(State)
-class CategoryTranslationOptions(TranslationOptions):
+class StateTranslationOptions(TranslationOptions):
     fields = ("name",)
-
-
-
-

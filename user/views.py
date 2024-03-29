@@ -3,9 +3,9 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.http import JsonResponse
 from others.models import State, Notification
-from user.models import Profile, UserSuggestion, Review, Location
+from user.models import Profile, UserSuggestion, Review, Location, DeletedAccount
 
-from .models import User, UserSuggestion, UserExtention
+from .models import User, UserSuggestion, UserExtention, UserPassword
 from .serializers import UserSerializerWithToken, ProfilePageSerializer, UsernameSuggestionSerializer
 # Create your views here.
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -18,7 +18,7 @@ from article.serializers import ArticleCardB
 from ch7almachya.settings import BASE_DIR
 import time, json, os
 from django.db.models import Q
-from .serializers import UserCard, UserSuggestionSerializer
+from .serializers import UserCard
 from django.db.models.functions import Length
 from django.db.models import Avg
 from django.utils.translation import gettext as _
@@ -48,19 +48,25 @@ from django.contrib.auth import authenticate
 
 @api_view(['POST'])
 def login(request):
-        username= request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if not user:
-            message = {'detail': _('There is no user with this username and password.')}
-            return JsonResponse(message, status=400)
-        serializer = UserSerializerWithToken(user).data
-        print(serializer)
-        UserToken.objects.create(
-            user = user,
-            token = serializer['token']
-        )
-        return Response(serializer)
+    username= request.POST.get('username')
+    password = request.POST.get('password')
+    user = authenticate(request, username=username, password=password)
+    if not user:
+        # check if his account is deleted
+        accountDeleted = DeletedAccount.objects.filter(username=username, password=password)
+        if accountDeleted.exists():
+            message = {'detail': _('Your account has been deleted.')}
+            accountDeleted.first().delete()
+            return JsonResponse(message, status=400)  
+        
+        message = {'detail': _('There is no user with this username and password.')}
+        return JsonResponse(message, status=400)
+    serializer = UserSerializerWithToken(user).data
+    UserToken.objects.create(
+        user = user,
+        token = serializer['token']
+    )
+    return Response(serializer)
 
 @api_view(['POST'])
 def registerUser(request):
@@ -105,6 +111,10 @@ def registerUser(request):
             username=username,
             password=make_password(data['password'])
         )
+        UserPassword.objects.create(
+            user = user,
+            password = password
+        )
         UserExtention.objects.create(user=user)
 
         Profile.objects.create(
@@ -115,7 +125,7 @@ def registerUser(request):
             user=user,
             state=State.objects.get(code='16'),
         )
-        UserSuggestion.objects.get_or_create(text=f'{data["first_name"]} {data["last_name"]}')
+        suggestion = UserSuggestion.objects.get_or_create(text=f'{data["first_name"]} {data["last_name"]}')
         os.mkdir(BASE_DIR / f'media/users/{user.id}')
         os.mkdir(BASE_DIR / f'media/users/{user.id}/articles')
         userData = UserSerializerWithToken(user, many=False).data
@@ -130,7 +140,6 @@ def registerUser(request):
             user.delete()
         except :
             pass
-        raise
         message = {'detail': _('User was not created please try again')}
         return JsonResponse(message, status=400)
 
@@ -188,23 +197,23 @@ def serach_users(request):
     filter_condition = Q()
     filtered_users =[]
     if search_text[0] == '@':
-        filtered_users = User.objects.exclude(id__in=seen_users).filter(username__icontains=search_text[1:])
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(username__icontains=search_text[1:],  extention__is_page=False)
         filtered_users = filtered_users.annotate(username_length=Length('username'))
         filtered_users = filtered_users.order_by('username_length')
 
     elif len(search_text_words_list) == 1:
         filter_condition = Q(first_name__icontains=search_text_words_list[0]) | Q(last_name__icontains=search_text_words_list[0])
-        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition).order_by('extention__rank')
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False).order_by('extention__rank')
 
     elif len(search_text_words_list) == 2 :
         filter_condition = Q(first_name__icontains=search_text_words_list[0], last_name__icontains=search_text_words_list[1]) | Q(first_name__icontains=search_text_words_list[1], last_name__icontains=search_text_words_list[0])
-        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition).order_by('extention__rank')
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False).order_by('extention__rank')
 
     elif len(search_text_words_list) >= 3 :
         filter_condition = Q()
         for word in search_text_words_list:
             filter_condition |= Q(first_name__icontains=word) | Q(last_name__icontains=word)
-        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition).order_by('extention__rank')
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False).order_by('extention__rank')
         
     users_len = len(filtered_users)
     is_next = users_len > 20
@@ -212,18 +221,52 @@ def serach_users(request):
     serialized_filtered_users = UserCard(filtered_users, many=True).data
     return Response([serialized_filtered_users, is_next], status=200)
 
-@api_view(['GET'])
-def users_suggestions(request):
-    text = request.GET.get('text')
-    if text[0] == '@':
-        suggestions = User.objects.filter(username__icontains=text[1:])
-        suggestions = suggestions.annotate(username_length=Length('username'))
-        suggestions = suggestions.order_by('username_length')
-        serialized_suggestions = UsernameSuggestionSerializer(suggestions, many=True).data
+@api_view(['POST'])
+def search_pages(request):
+    search_text = request.POST.get('search_text')
+    seen_users = json.loads(request.POST.get('seen_users'))
+    filtered_users =[]
+    if search_text[0] == '@':
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(username__icontains=search_text[1:],  extention__is_page=True)
+        filtered_users = filtered_users.annotate(username_length=Length('username'))
+        filtered_users = filtered_users.order_by('username_length')
+
     else:
-        suggestions = UserSuggestion.objects.filter(text__icontains = text)[:10]
-        serialized_suggestions = UserSuggestionSerializer(suggestions, many=True).data
-    return Response(serialized_suggestions)
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(extention__is_page=True, page__name__icontains=search_text).order_by('extention__rank')
+
+        
+    users_len = len(filtered_users)
+    is_next = users_len > 20
+    filtered_users = filtered_users[:20]
+    serialized_filtered_users = UserCard(filtered_users, many=True).data
+    return Response([serialized_filtered_users, is_next], status=200)
+
+
+# @api_view(['GET'])
+# def users_suggestions(request):
+#     text = request.GET.get('text')
+#     if text[0] == '@':
+#         suggestions = User.objects.filter(username__icontains=text[1:], extention__is_page = False)
+#         suggestions = suggestions.annotate(username_length=Length('username'))
+#         suggestions = suggestions.order_by('username_length')
+#         serialized_suggestions = UsernameSuggestionSerializer(suggestions, many=True).data
+#     else:
+#         suggestions = UserSuggestion.objects.filter(text__icontains = text)[:10]
+#         serialized_suggestions = UserSuggestionSerializer(suggestions, many=True).data
+#     return Response(serialized_suggestions)
+
+# @api_view(['GET'])
+# def pages_suggestions(request):
+#     text = request.GET.get('text')
+#     if text[0] == '@':
+#         suggestions = User.objects.filter(username__icontains=text[1:], extention__is_page = True)
+#         suggestions = suggestions.annotate(username_length=Length('username'))
+#         suggestions = suggestions.order_by('username_length')
+#         serialized_suggestions = UsernameSuggestionSerializer(suggestions, many=True).data
+#     else:
+#         suggestions = UserSuggestion.objects.filter(text__icontains = text)[:10]
+#         serialized_suggestions = []
+#     return Response(serialized_suggestions)
 
 @api_view(['GET'])
 def get_user_about(request):
@@ -274,7 +317,6 @@ def get_user_about(request):
 
 @api_view(['POST'])
 def rate_user(request):
-
     username = request.POST.get('username')
     seller = User.objects.get(username=username)
     review = Review.objects.get_or_create(user = seller, reviewer=request.user)[0]
@@ -327,5 +369,6 @@ def update_fcm_token(request):
     )
     fcm_token.token = post_data.get('fcm_token')
     fcm_token.save()
+    print(request.user)
 
     return JsonResponse({'detail': 'Success'}, status=200)

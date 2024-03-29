@@ -1,9 +1,11 @@
 
 import json
 from pyfcm import FCMNotification
+from firebase_admin import messaging
 
 
-FCM_API_KEY = "AAAA1kBgl_Q:APA91bHszWCi9ItE_y-F9ngHJAr3q70cCoxVowQgs8rmDeH5pXoYP6FN_XYNezI3mjxt790NchStphjZaV95FSuTG3pIgXp_RRzVYppoBpoOCkYo_kUG1g5_Hu_iZTVB0uonqqrAwzFh"
+
+FCM_API_KEY = "AAAA6mcBaL8:APA91bH4ly7V_S4VOSBJBZmOf39o6bdt048uwmQTDfgurxJTlPTjD7LJJFORt9j4ca_r_Dk82FOOceOBCBgW3gFZAigJemC5hy9ZLgrFscA01GjeFAwDTnMgXGRPhOIXVEqRCcjtOpDL"
 
 push_service = FCMNotification(api_key=FCM_API_KEY)
 def send_notification(resgistration_token, title, body, link, icon, msg_type):
@@ -18,7 +20,17 @@ def send_notification(resgistration_token, title, body, link, icon, msg_type):
         message_icon= icon,
         data_message=data_message,
     )
+    # print(icon)
+    # message = messaging.Message(
+    #     notification=messaging.Notification(title=title, body=body, image= 'http://localhost:8000' + icon),
+    #     token=resgistration_token,
+    # )
+    # response = messaging.send(message)
+    # print('Successfully sent message:', response)
  
 def send(user, title="", body="", link="", icon="", type=""):
     for token in user.fcm_tokens.all():
-        send_notification(token.token, title, body, link, icon, type)
+        try:
+            send_notification(token.token, title, body, link, icon, type)
+        except:
+            raise

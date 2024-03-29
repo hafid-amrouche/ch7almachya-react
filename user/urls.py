@@ -11,7 +11,9 @@ urlpatterns = [
     path('profile/<username>/get-articles/', views.get_user_articles),
     path('profile/<username>/toggle-follower/', views.toggle_follower),
     path('search-users/', views.serach_users),
-    path('suggest-users/', views.users_suggestions),
+    path('search-pages/', views.search_pages),
+    # path('suggest-users/', views.users_suggestions),
+    # path('suggest-pages/', views.pages_suggestions),
     path('get-user-about/', views.get_user_about),
     path('add-review/', views.rate_user)
 ]

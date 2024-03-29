@@ -17,6 +17,7 @@ from django.db.models import CharField
 from django.utils.translation import gettext as _
 
 
+
 current_year = str(datetime.now().year)
 # Create your views here.
 
@@ -25,7 +26,6 @@ def get_article(request):
     try:
         article = Article.objects.get(id=request.GET.get('id'))
         article.notification_set.all().update(is_seen=True, is_acknowledged=True)
-        print(request.user)
         articleSerialized = ArticlePageSerializer(article, many=False, context={'user' : request.user.is_authenticated and request.user}).data
         new_views_count =  article.views +1
         article.views = new_views_count
@@ -61,10 +61,13 @@ def delete_comment(request):
 def create_comment(request):
     text = request.POST.get('text').strip()
     if text :
+        article = Article.objects.get(id=request.POST.get('articleId'))
         comment = request.user.comments.create(
-            article_id = int(request.POST.get('articleId')),
-            text = text
+            article = article,
+            text = text,
         )
+        comment.slug = article.slug + f'{comment.id}/'
+        comment.save()
         return Response(CommentSerializer(comment, many=False).data)
     else:
         return JsonResponse({'detail' : 'Illegal action'}, status=400)
@@ -214,7 +217,6 @@ def filter_articles_by_parameter(articles, filter_parameters):
         ).filter(matching_options_count=len(options_id))
         return filtered_articles
     
-    print(query_conditions)
     filtered_articles = articles.filter(**query_conditions)
     return filtered_articles
 
@@ -380,3 +382,10 @@ def article_other_info(request):
     article = Article.objects.get(id =article_id)
     serialized_other_info = ArticleCardAOtherOptions(article, many=False).data
     return Response(serialized_other_info, status=200)
+
+@api_view(['GET'])
+def get_comment(request):
+    comment_id = request.GET.get('comment_id')
+    comment = Comment.objects.get(id=comment_id)
+    serializer = CommentSerializer(comment).data
+    return Response([serializer, comment.article.slug])

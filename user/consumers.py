@@ -37,7 +37,7 @@ class GeneralDataConsumer(AsyncWebsocketConsumer):
                 self.channel_name
             )
             await self.accept()
-            # print(f"User {user.username} connected to the websocket-General data.")
+            print(f"User {user.username} connected to the websocket-General data.")
         else:
             self.disconnect()
 

@@ -226,5 +226,6 @@ dictionary_fr ={
     'Contact our team at Ch7al machya for any information we will reply to you in less than a day': "Contactez notre équipe chez Ch7al machya pour toute information, nous vous répondrons en moins d'une journée",
     'For sale at Ch7al Machya': 'En vente sur Ch7al Machya',
     'is on Ch7al machya': 'est sur Ch7al machya',
-    'This username is taken' : 'Ce nom d\'utilisateur est pris'
+    'This username is taken' : 'Ce nom d\'utilisateur est pris',
+    'Your article is loading...' : 'Votre article est en cours de chargement...'
 }

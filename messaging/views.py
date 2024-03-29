@@ -39,7 +39,8 @@ def send_message(request):
                 serializer_conversation = ConversationSerializer(conversation, many=False, context={'user' : user}).data
                 update_conversation(user.id, serializer_conversation)
             #################################
-            return JsonResponse({'detail' : 'Sent'}, status=200)
+            serialiezed_message = MessageSerializer(message).data
+            return Response(serialiezed_message)
         else:
             return JsonResponse({'detail' : 'Message cannot be empty'}, status=400) 
     except Exception as e:
@@ -72,7 +73,6 @@ def get_messages(request):
             })
         return Response(response)
     except Exception as e:
-
         return JsonResponse({'detail' : str(e)}, status=400, safe=True)
     
 

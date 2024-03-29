@@ -7,6 +7,7 @@ urlpatterns = [
     path('get-article-comments/', views.get_article_comments),
     path('delete-comment/', views.delete_comment),
     path('create-comment/', views.create_comment),
+    path('get-comment/', views.get_comment),
     path('like-article/', views.like_article),
     path('dislike-article/', views.dislike_article),
     path('toggle-save-article/', views.toggle_save_article),

@@ -102,6 +102,7 @@ class Comment(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    slug = models.TextField(default='')
     def __str__(self):
         return str(self.article) + " | " + str(self.commenter)
  
