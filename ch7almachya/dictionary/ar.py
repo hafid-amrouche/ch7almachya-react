@@ -227,6 +227,7 @@ dictionary_ar ={
     'is on Ch7al machya': 'ناشط على شحال ماشيا',
     'Active' : 'مفعل',
     'This username is taken' : 'أسم المستخدم مأخوذ مسبقا',
-    'Your article is loading...' : "جاري تحميل منشورك..."
-
+    'Your article is loading...' : "جاري تحميل منشورك...",
+    'No article was found.': 'لم يتم العثور على أي منشور.',
+    'Another brand': "علامة أخرى",
 }

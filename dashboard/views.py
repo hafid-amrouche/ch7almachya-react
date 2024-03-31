@@ -163,7 +163,7 @@ def create_article(request):
 
         article.save()
 
-        article_suggestion, cond = ArticleSuggestion.objects.get_or_create(text = f'{article.brand.name} {title}')
+        article_suggestion, cond = ArticleSuggestion.objects.get_or_create(text = f'{other_brand or article.brand.name} {title}')
         if not cond:
             article_suggestion.times += 1
             article_suggestion.save()
@@ -305,7 +305,7 @@ def update_article(request):
         
         article.save()
 
-        article_suggestion, cond = ArticleSuggestion.objects.get_or_create(text = f'{article.brand.name} {title}')
+        article_suggestion, cond = ArticleSuggestion.objects.get_or_create(text = f'{other_brand or article.brand.name} {title}')
         if not cond:
             article_suggestion.times += 1
             article_suggestion.save()

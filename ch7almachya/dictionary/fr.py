@@ -63,7 +63,7 @@ dictionary_fr ={
     'Offred Price (in Millions)': 'Prix offert (en millions)',
     'Current Images': 'Images actuelles',
     'Add Images': 'Ajouter des images',
-    'Getting Created': 'En cours de création',
+    'Getting Created': 'création',
     'Update article': 'Mettre à jour l\'article',
     'Create article': 'Créer un article',
     'City': 'Ville',
@@ -227,5 +227,7 @@ dictionary_fr ={
     'For sale at Ch7al Machya': 'En vente sur Ch7al Machya',
     'is on Ch7al machya': 'est sur Ch7al machya',
     'This username is taken' : 'Ce nom d\'utilisateur est pris',
-    'Your article is loading...' : 'Votre article est en cours de chargement...'
+    'Your article is loading...' : 'Votre article est en cours de chargement...',
+    'No article was found.': 'Aucun article n\'a été trouvé.',
+    'Another brand': "Une autre marque",
 }
