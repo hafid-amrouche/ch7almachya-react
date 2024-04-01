@@ -230,4 +230,6 @@ dictionary_fr ={
     'Your article is loading...' : 'Votre article est en cours de chargement...',
     'No article was found.': 'Aucun article n\'a été trouvé.',
     'Another brand': "Une autre marque",
+    'Privacy policy' : 'Politique de confidentialité',
+    'Terms of service': 'Conditions d\'utilisation',
 }

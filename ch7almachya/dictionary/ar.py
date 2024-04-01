@@ -230,4 +230,6 @@ dictionary_ar ={
     'Your article is loading...' : "جاري تحميل منشورك...",
     'No article was found.': 'لم يتم العثور على أي منشور.',
     'Another brand': "علامة أخرى",
+    'Privacy policy' : 'سياسة الخصوصية',
+    'Terms of service': 'شروط الخدمة',
 }
