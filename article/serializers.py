@@ -173,7 +173,7 @@ class BrandBrowserSerializer(serializers.ModelSerializer):
     
     icon = serializers.SerializerMethodField(read_only=True)
     def get_icon(self, obj):
-        return get_media_url(obj.icon.url)
+        return get_media_url(obj.icon.url) if obj.icon else ''
     
     class Meta:
         model = Brand
