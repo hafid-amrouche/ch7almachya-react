@@ -173,7 +173,7 @@ class BrandBrowserSerializer(serializers.ModelSerializer):
     
     icon = serializers.SerializerMethodField(read_only=True)
     def get_icon(self, obj):
-        return get_media_url(obj.icon)
+        return get_media_url(obj.icon.url)
     
     class Meta:
         model = Brand
@@ -192,7 +192,7 @@ class CategoryBrowserSerializer(serializers.ModelSerializer):
     
     icon = serializers.SerializerMethodField(read_only=True)
     def get_icon(self, obj):
-        return get_media_url(obj.icon)
+        return get_media_url(obj.icon.url)
 
 class ColorSerializer(serializers.ModelSerializer):
     class Meta:
