@@ -10,6 +10,7 @@ import json
 from django.db.models import Q
 from user.update_user_realtime_data import update_conversation
 from django.utils.translation import gettext as _
+from functions import get_media_url
 
 
 # Create your views here.
@@ -48,7 +49,6 @@ def send_message(request):
             message.delete()
         except:
             pass
-        raise
         return JsonResponse({'detail' : str(e)}, status=400)
     
 
@@ -69,7 +69,7 @@ def get_messages(request):
             response.append({
                 'friend_name': {'text' :friend.page.name, 'is_verified': friend.page.is_verified } if friend.extention.is_page else friend.get_full_name(),
                 'friend_username' : friend.username,
-                'friend_image': friend.extention.image_150
+                'friend_image': get_media_url(friend.extention.image_150)
             })
         return Response(response)
     except Exception as e:
