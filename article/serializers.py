@@ -17,9 +17,10 @@ class ArticleHomeSerializer(serializers.ModelSerializer):
     def get_main_image(self, obj):
         try:
             main_image = obj.main_image and obj.main_image.url
+            main_image = get_media_url(main_image)
         except:
             main_image =""
-        return get_media_url(main_image)
+        return main_image
     
     class Meta:
         model = Article
@@ -130,9 +131,10 @@ class ArticleCardA(serializers.ModelSerializer):
     def get_main_image(self, obj):
         try:
             main_image = obj.main_image and obj.main_image.url
+            main_image = get_media_url(main_image)
         except:
             main_image =""
-        return get_media_url(main_image)
+        return main_image
     
     class Meta:
         model = Article
@@ -155,9 +157,10 @@ class ArticleCardB(serializers.ModelSerializer):
     def get_main_image(self, obj):
         try:
             main_image = obj.main_image and obj.main_image.url
+            main_image = get_media_url(main_image)
         except:
             main_image =""
-        return get_media_url(main_image)
+        return main_image
     
     class Meta:
         model = Article
@@ -167,9 +170,16 @@ class BrandBrowserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     def get_name(self, obj):
         return obj.name_en
+    
+    icon = serializers.SerializerMethodField(read_only=True)
+    def get_icon(self, obj):
+        return get_media_url(obj.icon)
+    
     class Meta:
         model = Brand
         fields = ['name', 'icon', 'id', 'order']
+    
+
 
 class CategoryBrowserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -179,6 +189,10 @@ class CategoryBrowserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     def get_name(self, obj):
         return getattr(obj, self.context['name_lang'])
+    
+    icon = serializers.SerializerMethodField(read_only=True)
+    def get_icon(self, obj):
+        return get_media_url(obj.icon)
 
 class ColorSerializer(serializers.ModelSerializer):
     class Meta:
