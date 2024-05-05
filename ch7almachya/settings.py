@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-c1keeb^z3+rzg@0s26)$md87kjdhf%_8@_%w!w7zh!^=-uyyc)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hafiddjango.pythonanywhere.com', '*']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -153,8 +153,6 @@ USE_L10N = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'react/users/static',
-    BASE_DIR / 'react/staff/static'
 ]
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -166,15 +164,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    'https://hafiddjango.pythonanywhere.com',
-    'http://localhost:8080'
-]
 
 CORS_ORIGIN_ALLOW_ALL = True
 

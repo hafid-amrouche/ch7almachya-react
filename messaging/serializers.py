@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import empty
 from .models import Message, Conversation
+from functions import get_media_url
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,7 +37,7 @@ class ConversationSerializer(serializers.ModelSerializer):
     def get_friend_image(self, obj):
         user = self.context['user']
         friend = obj.user2 if user == obj.user1 else obj.user1
-        return friend.extention.image_150
+        return get_media_url(friend.extention.image_150)
 
     sent_at = serializers.SerializerMethodField()
     def get_sent_at(self, obj):

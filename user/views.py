@@ -203,17 +203,17 @@ def serach_users(request):
 
     elif len(search_text_words_list) == 1:
         filter_condition = Q(first_name__icontains=search_text_words_list[0]) | Q(last_name__icontains=search_text_words_list[0])
-        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False).order_by('extention__rank')
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False)
 
     elif len(search_text_words_list) == 2 :
         filter_condition = Q(first_name__icontains=search_text_words_list[0], last_name__icontains=search_text_words_list[1]) | Q(first_name__icontains=search_text_words_list[1], last_name__icontains=search_text_words_list[0])
-        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False).order_by('extention__rank')
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False)
 
     elif len(search_text_words_list) >= 3 :
         filter_condition = Q()
         for word in search_text_words_list:
             filter_condition |= Q(first_name__icontains=word) | Q(last_name__icontains=word)
-        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False).order_by('extention__rank')
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(filter_condition,  extention__is_page=False)
         
     users_len = len(filtered_users)
     is_next = users_len > 20
@@ -232,7 +232,7 @@ def search_pages(request):
         filtered_users = filtered_users.order_by('username_length')
 
     else:
-        filtered_users = User.objects.exclude(id__in=seen_users).filter(extention__is_page=True, page__name__icontains=search_text).order_by('extention__rank')
+        filtered_users = User.objects.exclude(id__in=seen_users).filter(extention__is_page=True, page__name__icontains=search_text)
 
         
     users_len = len(filtered_users)

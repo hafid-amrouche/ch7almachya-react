@@ -14,6 +14,10 @@ from django.utils.html import strip_tags
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
+from constants import media_proxy
+
+def get_media_url(url):
+    return media_proxy + url
 
 
 def delete_folder(folder_path):

@@ -17,7 +17,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from . import views
-from django.conf.urls.i18n import i18n_patterns
 from . import settings
 from django.conf.urls.static import static
 from .files_render import firebase_messaging_sw

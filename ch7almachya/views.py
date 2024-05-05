@@ -26,11 +26,15 @@ from .dictionary.fr import dictionary_fr
 from .dictionary.en import dictionary_en
 from functions import is_valid_email
 from django.utils import timezone
-
+from constants import proxy
 
 
 from django.conf import settings
 from django.utils.translation import check_for_language
+
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
+from functions import get_media_url
 
 @api_view(['GET'])
 def home(request):
@@ -38,12 +42,11 @@ def home(request):
     for category in Category.objects.all():
         serialized_data.append({
             'id' : category.id,
-            'icon' : category.icon.url if category.icon else '',
+            'icon' : get_media_url(category.icon.url) if category.icon else '',
             'name' : category.name,
             'order' : category.order,
             'articles' : ArticleHomeSerializer(Article.objects.filter(category=category)[:12] , many=True).data
         })
-
     return Response(serialized_data)
 
 @api_view(['GET'])
@@ -109,16 +112,19 @@ def send_verfication_token(request):
         email = user.email
         current_site = get_current_site(request)
         mail_subjet = 'Reset Password'
-        message = render_to_string(f'general/reset_password_validation_email_{request.LANGUAGE_CODE}.html', {
+        html_message = render_to_string(f'general/reset_password_validation_email_{request.LANGUAGE_CODE}.html', {
         'email' : email,
         'user' : user,
         'domain' : current_site,
         'uid' : urlsafe_base64_encode(force_bytes(user.id)),
-        'token' : default_token_generator.make_token(user)
+        'token' : default_token_generator.make_token(user),
+        'logo' : proxy + '/static/others/logo.jpg'
         })
         to_email = email
-        email_message = EmailMessage(subject=mail_subjet, body=message, from_email=EMAIL_HOST_USER, to=[to_email])
-        email_message.send()
+        plain_message = strip_tags(html_message)
+        send_email = EmailMultiAlternatives(subject=mail_subjet, body=plain_message, from_email=EMAIL_HOST_USER, to=[to_email])
+        send_email.attach_alternative(html_message, "text/html")
+        send_email.send()
         return JsonResponse({'detail' : _('We have sent an email with the verification link to the email of "{}"').format(email_or_username)}, status=200)
     else:
         return JsonResponse({'detail' :  _('No user exists with that email or username')}, status=400)
@@ -210,3 +216,4 @@ def contact_us(request):
         return JsonResponse(_('Your message was sent successfully'), safe=False)
     except:
         return JsonResponse({'detail':_('Your message was not sent, please make sure that all field are filled and your email is corret.')}, status=404, safe=False)
+

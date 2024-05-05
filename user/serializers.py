@@ -2,6 +2,7 @@ from rest_framework import serializers
 from user.models import User, UserSuggestion, Profile, UserExtention, Page, Location
 from rest_framework_simplejwt.tokens import RefreshToken
 from others.serializers import StateSerializer
+from functions import get_media_url
 
 class LocationSerializer(serializers.ModelSerializer):
     state = serializers.SerializerMethodField(read_only=True)
@@ -49,6 +50,14 @@ class UserExtentionSerializerSettingsProfile(serializers.ModelSerializer):
         model = UserExtention
         fields = ['image', 'image_150', 'bio','email_verified', 'is_page', 'other_socials', 'linkedin', 'twitter', 'youtube', 'tiktok', 'instagram', 'facebook', 'email_public']
     
+    image = serializers.SerializerMethodField(read_only=True)
+    def get_image(self, obj):
+        return get_media_url(obj.image)
+    
+    image_150 = serializers.SerializerMethodField(read_only=True)
+    def get_image_150(self, obj):
+        return get_media_url(obj.image)
+    
 class AcountInfoUserExtentionSerializerSettingsProfile(serializers.ModelSerializer):
     class Meta:
         model = UserExtention
@@ -80,7 +89,7 @@ class ProfilePageSerializer(serializers.ModelSerializer):
     
     image = serializers.SerializerMethodField(read_only=True)
     def get_image(self, obj):
-        return obj.extention.image
+        return get_media_url(obj.extention.image)
     
     bio = serializers.SerializerMethodField(read_only=True)
     def get_bio(self, obj):
@@ -93,11 +102,7 @@ class ProfilePageSerializer(serializers.ModelSerializer):
     followers_count = serializers.SerializerMethodField(read_only=True)
     def get_followers_count(self, obj):
         return obj.followers.followers_list.all().count()
-    
-    rank = serializers.SerializerMethodField(read_only=True)
-    def get_rank(self, obj):
-        return obj.extention.rank
- 
+
     articles_count = serializers.SerializerMethodField(read_only=True)
     def get_articles_count(self, obj):
         return obj.articles.count()
@@ -115,7 +120,7 @@ class ProfilePageSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['name', 'is_admin', 'username', 'image', 'bio', 'followers', 'rank', 'articles_count', 'is_follower', 'followers_count', 'id', 'is_page']
+        fields = ['name', 'is_admin', 'username', 'image', 'bio', 'followers', 'articles_count', 'is_follower', 'followers_count', 'id', 'is_page']
 
 
 class UserCard(serializers.ModelSerializer):
@@ -123,11 +128,8 @@ class UserCard(serializers.ModelSerializer):
 
     image_150 = serializers.SerializerMethodField(read_only=True)
     def get_image_150(self, obj):
-        return obj.extention.image_150
+        return get_media_url(obj.extention.image_150)
     
-    rank = serializers.SerializerMethodField(read_only=True)
-    def get_rank(self, obj):
-        return obj.extention.rank
     
     name = serializers.SerializerMethodField(read_only=True)
     def get_name(self, obj):
@@ -135,7 +137,7 @@ class UserCard(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'name' ,'image_150', 'rank']
+        fields = ['id', 'username', 'name' ,'image_150']
 
 class UserSuggestionSerializer(serializers.ModelSerializer):
     class Meta:

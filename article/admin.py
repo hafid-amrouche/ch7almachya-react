@@ -1,12 +1,10 @@
 from django.contrib import admin
 
-from .models import Article, Image, Document, GearBox, Fuel, Option, Comment, Brand, Color, ArticleSuggestion, MainImage, Category, SavedArticle
+from .models import Article, Document, GearBox, Fuel, Option, Comment, Brand, Color, ArticleSuggestion, Category, SavedArticle
 
 # Register your models here.
 
 admin.site.register(Article)
-admin.site.register(Image)
-admin.site.register(MainImage)
 admin.site.register(Document)
 admin.site.register(Fuel)
 admin.site.register(GearBox)

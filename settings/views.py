@@ -22,7 +22,10 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect
 from functions import is_valid_email 
 from django.utils.translation import gettext as _
+from constants import proxy
 
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
 
 def delete_report(user):
   try:
@@ -118,7 +121,6 @@ def update_page(request):
 @permission_classes([IsAuthenticated])
 def update_account(request):
   try :
-  
       user = request.user
       user_extention = user.extention
       data = request.POST
@@ -307,14 +309,17 @@ def update_email(request):
 def confirm_email(request):
   if request.user.extention.email_verified == False :
     mail_subjet = 'Account activation'
-    message = render_to_string(f'settings/activation_link_sent_{request.LANGUAGE_CODE}.html', {
+    html_message = render_to_string(f'settings/activation_link_sent_{request.LANGUAGE_CODE}.html', {
     'user' : request.user,
     'domain' : get_current_site(request),
     'uid' : urlsafe_base64_encode(force_bytes(request.user.id)),
-    'token' : default_token_generator.make_token(request.user)
+    'token' : default_token_generator.make_token(request.user),
+    'logo' : proxy + '/static/others/logo.jpg'
     })
     to_email = request.user.email
-    send_email = EmailMessage(subject=mail_subjet, body=message, from_email=EMAIL_HOST_USER, to=[to_email])
+    plain_message = strip_tags(html_message)
+    send_email = EmailMultiAlternatives(subject=mail_subjet, body=plain_message, from_email=EMAIL_HOST_USER, to=[to_email])
+    send_email.attach_alternative(html_message, "text/html")
     try :
       send_email.send()
       message= {'detail' : _('We sent the activation link to your email "{}"').format(to_email)}

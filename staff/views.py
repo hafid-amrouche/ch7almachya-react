@@ -56,6 +56,16 @@ def reports(request):
     else:
         return JsonResponse({'detail' : 'error'}, status=400)
 
+@api_view(['GET'])
+def get_report(request, report_id):
+    user = request.user
+    if user.is_staff:
+        report = Report.objects.get(id = report_id)
+        serializer = ReportSerializer(report).data
+        return Response(serializer)
+    else:
+        return JsonResponse({'detail' : 'error'}, status=400)
+
 @api_view(['POST'])
 def delete_reported_object(request):
     time.sleep(1)
@@ -182,7 +192,7 @@ def reply_to_message(request):
     message_id = request.POST.get('message_id')
     message = ContactUs.objects.get(id = message_id)
     reply = request.POST.get('reply').strip()
-    logo = f'{ proxy }/static/media/ch7al_machya.7204cb898474a059d4b3.png'
+    logo = f'{ proxy }/static/others/logo.jpg'
     send_email(message.email, reply, logo, 'Ch7al machya')
     message.acknoleged = True
     message.reply = reply
@@ -211,6 +221,16 @@ def messages(request):
             messages = messages[:20]
         serializer = ContacUsSerializer(messages, many=True).data
         return Response([serializer, messages_count > 20])
+    else:
+        return JsonResponse({'detail' : 'error'}, status=400)
+    
+@api_view(['GET'])
+def get_message(request, message_id):
+    user = request.user
+    if user.is_staff:
+        messages = ContactUs.objects.get(id = message_id)
+        serializer = ContacUsSerializer(messages).data
+        return Response(serializer)
     else:
         return JsonResponse({'detail' : 'error'}, status=400)
     

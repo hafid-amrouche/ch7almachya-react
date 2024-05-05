@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkfe=self.webpackChunkfe||[]).push([[880],{9880:(e,t,s)=>{s.r(t),s.d(t,{default:()=>i});var a=s(2791);const i=e=>{let{token:t}=e;(0,a.useEffect)((()=>{var e;t?(e=t,window.ReactNativeWebView.postMessage(JSON.stringify({type:"USER_TOKEN_CHANGED",token:e}))):window.ReactNativeWebView.postMessage(JSON.stringify({type:"USER_TOKEN_DELETED"}))}),[t])}}}]);
-//# sourceMappingURL=880.d0447aff.chunk.js.map

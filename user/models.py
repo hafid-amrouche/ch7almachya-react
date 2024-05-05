@@ -15,7 +15,6 @@ class UserExtention(models.Model):
     image_150= models.TextField(default='/static/others/user_150.png')
     bio = models.TextField(max_length=255, default='')
     image_update_count = models.IntegerField(default=1)
-    rank = models.PositiveIntegerField(null=True, blank=True)
     email_verified = models.BooleanField(default= False)
     email_public = models.BooleanField(default= True)
     is_page = models.BooleanField(default= False)

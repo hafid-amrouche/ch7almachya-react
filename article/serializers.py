@@ -1,11 +1,7 @@
 from rest_framework import serializers
 from .models import Article, Document, GearBox, Fuel, Option, Brand, Color, Comment, SavedArticle, Like, Dislike, ArticleSuggestion, Image, Category
 import json
-
-class MainImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ['id', 'url']
+from functions import get_media_url
 
 
 class ArticleHomeSerializer(serializers.ModelSerializer):
@@ -23,7 +19,7 @@ class ArticleHomeSerializer(serializers.ModelSerializer):
             main_image = obj.main_image and obj.main_image.url
         except:
             main_image =""
-        return main_image
+        return get_media_url(main_image)
     
     class Meta:
         model = Article
@@ -75,7 +71,7 @@ class ArticlePageSerializer(serializers.ModelSerializer):
     
     creator_image = serializers.SerializerMethodField(read_only=True)
     def get_creator_image(self, obj):
-        return obj.creator.extention.image_150
+        return get_media_url(obj.creator.extention.image_150)
     
     creator_id = serializers.SerializerMethodField(read_only=True)
     def get_creator_id(self, obj):
@@ -136,7 +132,7 @@ class ArticleCardA(serializers.ModelSerializer):
             main_image = obj.main_image and obj.main_image.url
         except:
             main_image =""
-        return main_image
+        return get_media_url(main_image)
     
     class Meta:
         model = Article
@@ -161,7 +157,7 @@ class ArticleCardB(serializers.ModelSerializer):
             main_image = obj.main_image and obj.main_image.url
         except:
             main_image =""
-        return main_image
+        return get_media_url(main_image)
     
     class Meta:
         model = Article
@@ -232,7 +228,7 @@ class OptionSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     commenter_image = serializers.SerializerMethodField(read_only=True)
     def get_commenter_image(self, obj):
-        return obj.commenter.extention.image
+        return get_media_url(obj.commenter.extention.image)
     
     commenter_name = serializers.SerializerMethodField(read_only=True)
     def get_commenter_name(self, obj):
@@ -264,6 +260,11 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ['id', 'url']
+    
+    url = serializers.SerializerMethodField(read_only=True)
+    def get_url(self, obj):
+        return get_media_url(obj.url)
+
 
 class EditArticleSerializer(serializers.ModelSerializer):
     state_code = serializers.SerializerMethodField(read_only=True)
