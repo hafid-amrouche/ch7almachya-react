@@ -43,13 +43,14 @@ urlpatterns = [
     path('api/parameters/', views.parameters),
     path('api/contact-us/', views.contact_us),
     path('admin/', admin.site.urls),
-    path('staff/', TemplateView.as_view(template_name='staff/index.html')),
-    path('staff/<path:extra>/', TemplateView.as_view(template_name='staff/index.html')),
+    # path('staff/', TemplateView.as_view(template_name='staff/index.html')),
+    # path('staff/<path:extra>/', TemplateView.as_view(template_name='staff/index.html')),
     path('api/staff/', include('staff.urls')),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# urlpatterns += [
-#     re_path(r'^.*$', TemplateView.as_view(template_name='users/index.html')),
-# ]
+urlpatterns += [
+    # re_path(r'^.*$', TemplateView.as_view(template_name='users/index.html')),
+    re_path(r'^.*$', views.redirect_ch7al_machya),
+]

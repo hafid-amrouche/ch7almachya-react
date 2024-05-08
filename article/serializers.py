@@ -278,6 +278,16 @@ class ImageSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField(read_only=True)
     def get_url(self, obj):
         return get_media_url(obj.url)
+    
+
+class ImageSerializerEditArticle(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ['id', 'url']
+    
+    url = serializers.SerializerMethodField(read_only=True)
+    def get_url(self, obj):
+        return obj.url
 
 
 class EditArticleSerializer(serializers.ModelSerializer):
@@ -323,7 +333,7 @@ class EditArticleSerializer(serializers.ModelSerializer):
     
     images_list = serializers.SerializerMethodField(read_only=True)
     def get_images_list(self, obj):
-        return  ImageSerializer(obj.image_set.all(), many=True).data
+        return  ImageSerializerEditArticle(obj.image_set.all(), many=True).data
     
     main_image_id = serializers.SerializerMethodField(read_only=True)
     def get_main_image_id(self, obj):

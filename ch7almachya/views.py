@@ -36,6 +36,9 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 from functions import get_media_url
 
+def redirect_ch7al_machya(request):
+    return redirect('https://www.ch7almachya.com/')
+
 @api_view(['GET'])
 def home(request):
     serialized_data = []

@@ -26,7 +26,7 @@ admin = User.objects.get(username='ch7almachya')
 def create_article(request):
     try:
         user = request.user
-        if user.articles.count()>= 20:
+        if not user.is_staff and user.articles.count()>= 20:
             message ={'detail' : _('You cannot create more than 20 articles in the basic plan')}
             return JsonResponse(message, status=400, safe=False)
         data = request.POST
