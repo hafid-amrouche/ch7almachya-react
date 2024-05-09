@@ -275,17 +275,20 @@ def get_user_about(request):
     user = User.objects.get(username = username)
     user_reviews = Review.objects.filter(user = user)
     rating = user_reviews.aggregate(mean_rating=Avg('rating'))['mean_rating']
-    reviewer_rating = request.user.reviewer_reviews.filter(user = user)
-    is_user_rated = reviewer_rating.exists()
-    user_rate = 50
-    if is_user_rated:
-        user_rate = reviewer_rating.first().rating
 
+    if request.user.is_authenticated:
+        reviewer_rating = request.user.reviewer_reviews.filter(user = user)
+        is_user_rated = reviewer_rating.exists()
+        user_rate = 50
+        if is_user_rated:
+            user_rate = reviewer_rating.first().rating
+    else:
+        user_rate = None
 
     data={
         'seller_rating' : rating,
         'reviews_count' : user_reviews.count(),
-        'is_user_rated' : request.user.reviewer_reviews.filter(user = user).exists(),
+        'is_user_rated' : request.user.is_authenticated and request.user.reviewer_reviews.filter(user = user).exists(),
         'user_rate' : user_rate,
         'info_section' : {
             _('Email') :   user.extention.email_verified and user.extention.email_public and user.email,
