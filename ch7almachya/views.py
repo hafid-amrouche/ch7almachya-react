@@ -86,6 +86,7 @@ def parameters(request, lang=None):
         'options' : OptionSerializer(Option.objects.all(), many=True, context={'name_lang' : name_lang}).data,
         'dictionary' : dictionary
     }
+    print(JsonResponse(browser_data, safe=True))
     return JsonResponse(browser_data, safe=True)
 
 
