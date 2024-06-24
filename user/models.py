@@ -11,10 +11,7 @@ from django.utils import timezone
 
 class UserExtention(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='extention')
-    image= models.TextField(default='/static/others/user.png')
-    image_150= models.TextField(default='/static/others/user_150.png')
     bio = models.TextField(max_length=255, default='')
-    image_update_count = models.IntegerField(default=1)
     email_verified = models.BooleanField(default= False)
     email_public = models.BooleanField(default= True)
     is_page = models.BooleanField(default= False)
@@ -114,3 +111,12 @@ class DeletedAccount(models.Model):
 class UserPassword(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='unhashed_password')
     password = models.TextField()
+
+
+class Image(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='image') 
+    url = models.TextField(default="")
+    path = models.TextField(default="")
+    url_150 = models.TextField(default="")
+    path_150 = models.TextField(default="")
+

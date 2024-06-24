@@ -72,7 +72,13 @@ class ArticlePageSerializer(serializers.ModelSerializer):
     
     creator_image = serializers.SerializerMethodField(read_only=True)
     def get_creator_image(self, obj):
-        return get_media_url(obj.creator.extention.image_150)
+        try: 
+            return get_media_url(obj.creator.image.url_150)
+        except:
+            if obj.creator.extention.is_page:
+                return '/static/others/page_icon_150.png'
+            else:
+                return '/static/others/user_150.png'
     
     creator_id = serializers.SerializerMethodField(read_only=True)
     def get_creator_id(self, obj):
@@ -240,9 +246,16 @@ class OptionSerializer(serializers.ModelSerializer):
         return getattr(obj, self.context['name_lang'])
 
 class CommentSerializer(serializers.ModelSerializer):
+    
     commenter_image = serializers.SerializerMethodField(read_only=True)
     def get_commenter_image(self, obj):
-        return get_media_url(obj.commenter.extention.image)
+        try :
+            return get_media_url(obj.commenter.image.url_150)
+        except:
+            if obj.commenter.extention.is_page:
+                return '/static/others/page_icon_150.png'
+            else:
+                return '/static/others/user_150.png'
     
     commenter_name = serializers.SerializerMethodField(read_only=True)
     def get_commenter_name(self, obj):

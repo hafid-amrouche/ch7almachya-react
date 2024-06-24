@@ -43,13 +43,15 @@ def redirect_ch7al_machya(request):
 def home(request):
     serialized_data = []
     for category in Category.objects.all():
-        serialized_data.append({
-            'id' : category.id,
-            'icon' : get_media_url(category.icon.url) if category.icon else '',
-            'name' : category.name,
-            'order' : category.order,
-            'articles' : ArticleHomeSerializer(Article.objects.filter(category=category)[:12] , many=True).data
-        })
+        articles = Article.objects.filter(category=category)[:12]
+        if articles:
+            serialized_data.append({
+                'id' : category.id,
+                'icon' : get_media_url(category.icon.url) if category.icon else '',
+                'name' : category.name,
+                'order' : category.order,
+                'articles' : ArticleHomeSerializer(articles , many=True).data
+            })
     return Response(serialized_data)
 
 @api_view(['GET'])
@@ -170,28 +172,36 @@ def serve_resized_image(request, width):
     return response
 
 @api_view(['POST'])
-def report(request):
-    type = request.POST.get('type')
+def report(request): ## edited
+    data = json.loads(request.body)
+    type = data.get('type')
     query_dict = {}
     if not request.user.is_authenticated:        
         return JsonResponse({'detail' : _('You have to be logged to report this {}').format(_(type))}, status=400)
         
     if type == 'Comment':
-        comment = Comment.objects.get(id = request.POST.get('comment_id') )
+        comment = Comment.objects.get(id = data.get('comment_id') )
+        if comment.commenter  == request.user:
+            raise
         query_dict.update({
             'comment' : comment,
             'user' : comment.commenter
         })
 
     elif type == 'Article':
-        article = Article.objects.get(id = request.POST.get('article_id'))
+        article = Article.objects.get(id = data.get('article_id'))
+        if article.creator  == request.user:
+            raise
         query_dict.update({
             'article' : article ,
             'user' : article.creator
         })
     elif type == 'User':
+        user = User.objects.get(username = data.get('user_username'))
+        if user  == request.user:
+            raise
         query_dict.update({
-            'user' : User.objects.get(username = request.POST.get('user_username') )
+            'user' : user
         })
     
     report, created = Report.objects.get_or_create(**query_dict)

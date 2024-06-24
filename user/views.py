@@ -48,8 +48,9 @@ from django.contrib.auth import authenticate
 
 @api_view(['POST'])
 def login(request):
-    username= request.POST.get('username')
-    password = request.POST.get('password')
+    data = json.loads(request.body)
+    username= data.get('username').lower()
+    password = data.get('password')
     user = authenticate(request, username=username, password=password)
     if not user:
         # check if his account is deleted
@@ -60,6 +61,7 @@ def login(request):
             return JsonResponse(message, status=400)  
         
         message = {'detail': _('There is no user with this username and password.')}
+        print(message)
         return JsonResponse(message, status=400)
     serializer = UserSerializerWithToken(user).data
     UserToken.objects.create(
@@ -372,6 +374,5 @@ def update_fcm_token(request):
     )
     fcm_token.token = post_data.get('fcm_token')
     fcm_token.save()
-    print(request.user)
 
     return JsonResponse({'detail': 'Success'}, status=200)

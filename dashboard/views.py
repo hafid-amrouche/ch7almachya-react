@@ -139,10 +139,11 @@ def create_article(request):
                     imageObject.url = url
                     imageObject.save()
                     image.save(path,"JPEG")
+
                 if images_count == 0 :
                     image.thumbnail((400, 400))
-                    main_url = f"/media/users/{ user.id }/articles/{article.id}/main.jpeg"
-                    main_path = BASE_DIR / f"media/users/{ user.id }/articles/{article.id}/main.jpeg"
+                    main_url = f"/media/users/{ user.id }/articles/{article.id}/{imageObject.id}_main.jpeg"
+                    main_path = BASE_DIR / f"media/users/{ user.id }/articles/{article.id}/{imageObject.id}_main.jpeg"
                     image.save(main_path,"JPEG")
                     MainImage.objects.create(
                         article = article,
@@ -406,12 +407,15 @@ def set_main_image(request):
     article = request.user.articles.get(id=request.POST.get('article_id'))
     data = request.POST.get('image_id')
     image = article.image_set.get(id=data)
-    main_image = MainImage.objects.get(article=article)
-    main_image.image = image
-    main_image.save()
     new_image = IM.open(image.path)
     new_image = new_image.convert('RGB')
     new_image.thumbnail((400, 400))
-    main_path = BASE_DIR / f"media/users/{ request.user.id }/articles/{article.id}/main.jpeg"
+    main_url = f"media/users/{ request.user.id }/articles/{article.id}/{image.id}_main.jpeg"
+    main_path = BASE_DIR / main_url
     new_image.save(main_path,"JPEG")
+    main_image = MainImage.objects.get(article=article)
+    main_image.image = image
+    main_image.url = '/' + main_url
+    main_image.path = main_path
+    main_image.save()
     return JsonResponse(data, safe=False)

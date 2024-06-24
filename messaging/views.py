@@ -65,11 +65,19 @@ def get_messages(request):
         messages = messages[:20]
         messages = MessageSerializer(messages, many=True).data
         response = [messages, cond]
+        try:
+            friend_image = get_media_url(friend.image.url_150)
+        except:
+            if friend.extention.is_page:
+                friend_image = '/static/others/page_icon_150.png'
+            else:
+                friend_image = '/static/others/user_150.png'
+        
         if seen_messages == []:
             response.append({
                 'friend_name': {'text' :friend.page.name, 'is_verified': friend.page.is_verified } if friend.extention.is_page else friend.get_full_name(),
                 'friend_username' : friend.username,
-                'friend_image': get_media_url(friend.extention.image_150)
+                'friend_image': friend_image
             })
         return Response(response)
     except Exception as e:
@@ -88,4 +96,5 @@ def get_conversations(request):
         conversations = ConversationSerializer(conversations, many=True, context={'user' : request.user}).data
         return Response([conversations, cond])
     except Exception as e:
+        raise
         return JsonResponse({'detail' : str(e)}, status=400, safe=True)

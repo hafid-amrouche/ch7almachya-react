@@ -32,12 +32,29 @@ class ConversationSerializer(serializers.ModelSerializer):
     text = serializers.SerializerMethodField()
     def get_text(self, obj):
         return obj.last_message.text
-
-    friend_image = serializers.SerializerMethodField()
+    
     def get_friend_image(self, obj):
         user = self.context['user']
         friend = obj.user2 if user == obj.user1 else obj.user1
-        return get_media_url(friend.extention.image_150)
+        try :
+            return get_media_url(friend.image.url_150)
+        except:
+            if friend.extention.is_page:
+                return '/static/others/page_icon_150.png'
+            else:
+                return '/static/others/user_150.png'
+    
+    friend_image = serializers.SerializerMethodField(read_only=True)
+    def get_friend_image(self, obj):
+        user = self.context['user']
+        friend = obj.user2 if user == obj.user1 else obj.user1
+        try :
+            return get_media_url(friend.image.url_150)
+        except:
+            if friend.extention.is_page:
+                return '/static/others/page_icon_150.png'
+            else:
+                return '/static/others/user_150.png'
 
     sent_at = serializers.SerializerMethodField()
     def get_sent_at(self, obj):

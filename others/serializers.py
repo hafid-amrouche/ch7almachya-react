@@ -21,7 +21,13 @@ class NotificationSerializer(serializers.ModelSerializer):
     
     avatar = serializers.SerializerMethodField(read_only=True)
     def get_avatar(self, obj):
-        return get_media_url(obj.notifier.extention.image_150)
+        try:
+            return get_media_url(obj.notifier.image.url_150)
+        except:
+            if obj.notifier.extention.is_page:
+                return '/static/others/page_icon_150.png'
+            else:
+                return '/static/others/user_150.png'
     
     url = serializers.SerializerMethodField(read_only=True)
     def get_url(self, obj):

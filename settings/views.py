@@ -3,9 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
 from others.models import State
-from user.models import Profile, User, Page
+from user.models import Profile, User, Page, Image
 from user.serializers import UserSerializerWithToken, PageSerializerSettingsProfile, ProfileSerializerSettingsProfile, LocationSerializer, AcountInfoUserExtentionSerializerSettingsProfile
-from PIL import Image
 from ch7almachya.settings import BASE_DIR
 import time, os
 from ch7almachya.settings import EMAIL_HOST_USER
@@ -16,7 +15,7 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from ch7almachya.settings import EMAIL_HOST_USER
-from PIL import Image
+from PIL import Image as IM
 from user.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import redirect
@@ -200,15 +199,23 @@ def update_socials(request):
 def update_profile_image(request):
 
     user = request.user
-    user_extention = user.extention
-    image = Image.open(request.FILES.get('image'))
+    image = IM.open(request.FILES.get('image'))
     format = image.format
     image = image.convert('RGB')
     if image.width >1080 or image.height > 1080 :
         image.thumbnail((1080, 1080))
     try:
-        url_1 = f"media/users/{ user.id }/image.jpeg"
-        url_2 = f"media/users/{ user.id }/image_150.jpeg"
+        image_obj, created = Image.objects.get_or_create(
+           user = user
+        )
+        url_1 = f"media/users/{ user.id }/{image_obj.id}.jpeg"
+        url_2 = f"media/users/{ user.id }/{image_obj.id}_150.jpeg"
+
+        image_obj.url = '/' + url_1
+        image_obj.path = BASE_DIR / url_1
+        image_obj.url_150 = '/' + url_2
+        image_obj.path_150 = BASE_DIR / url_2
+        image_obj.save()
 
         image.save(
             BASE_DIR / url_1,
@@ -222,17 +229,17 @@ def update_profile_image(request):
             format,
             optimize=True,
             )
-        user_extention.image = '/' + url_1
-        user_extention.image_150 = '/' + url_2
-        user_extention.image_update_count += 1
-        user_extention.save()
+ 
 
         delete_report(user)
         return JsonResponse(
-            {'image' : '/' + url_1 + f'?v={user_extention.image_update_count}.0.0',
-            'image_150' : '/' + url_2 + f'?v={user_extention.image_update_count}.0.0'},
+            {
+              'image' : '/' + url_1 ,
+              'image_150' : '/' + url_2
+            },
             safe=True)
     except Exception as e:
+        image_obj.delete()
         print(e)
         message = {'detail': _('Your profile picture was not updated')}
         return JsonResponse(message, status=400)
@@ -240,16 +247,17 @@ def update_profile_image(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def remove_profile_image(request):
-
     user = request.user
-    extention = user.extention
     try:
         url_1, url_2 = ["/static/others/page_icon.png", "/static/others/page_icon_150.png"] if user.extention.is_page else ["/static/others/user.png", "/static/others/user_150.png"]
-        extention.image = url_1
-        extention.image_150 = url_2
-        extention.save()
-        os.remove(BASE_DIR / f"media/users/{ user.id }/image.jpeg")
-        os.remove(BASE_DIR / f"media/users/{ user.id }/image_150.jpeg")
+        try:
+          image_obj = Image.objects.get(user=user)
+          os.remove(BASE_DIR / f"media/users/{ user.id }/{image_obj.id}.jpeg")
+          os.remove(BASE_DIR / f"media/users/{ user.id }/{image_obj.id}_150.jpeg")
+          image_obj.delete()
+        except:
+          print('Error settings.views 261')
+
         return JsonResponse({'image' : url_1, 'image_150' : url_2}, safe=True)
     except Exception as e:
         message = {'detail': _('Your profile picture was not deleted')}

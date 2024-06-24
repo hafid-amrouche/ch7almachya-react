@@ -3,6 +3,7 @@ from .models import Notification
 from user.update_user_realtime_data import update_notification, delete_notification
 from user.push_notifications import send
 from django.utils.translation import gettext as _
+from functions import get_media_url
 
 
 def update_user_notifications(sender, instance, created, **kwargs):
@@ -38,7 +39,14 @@ def update_user_notifications(sender, instance, created, **kwargs):
             link = ''
             text = ''
                 
-        icon = notification.notifier.extention.image_150
+        try :
+            icon = get_media_url(notification.notifier.image.url_150)
+        except:
+            if notification.notifier.extention.is_page:
+                return '/static/others/page_icon_150.png'
+            else:
+                return '/static/others/user_150.png'
+        
         send(notification.notified, title=title, body=text, link=link, icon=icon, type=f'{notification.notification_type}-{ notification.notifier.id }')
 
 def deleted_user_notification(sender, instance, **kwargs):

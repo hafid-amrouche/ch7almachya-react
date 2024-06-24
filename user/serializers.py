@@ -48,15 +48,8 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 class UserExtentionSerializerSettingsProfile(serializers.ModelSerializer):
     class Meta:
         model = UserExtention
-        fields = ['image', 'image_150', 'bio','email_verified', 'is_page', 'other_socials', 'linkedin', 'twitter', 'youtube', 'tiktok', 'instagram', 'facebook', 'email_public']
-    
-    image = serializers.SerializerMethodField(read_only=True)
-    def get_image(self, obj):
-        return get_media_url(obj.image)
-    
-    image_150 = serializers.SerializerMethodField(read_only=True)
-    def get_image_150(self, obj):
-        return get_media_url(obj.image)
+        fields = ['bio','email_verified', 'is_page', 'other_socials', 'linkedin', 'twitter', 'youtube', 'tiktok', 'instagram', 'facebook', 'email_public']
+
     
 class AcountInfoUserExtentionSerializerSettingsProfile(serializers.ModelSerializer):
     class Meta:
@@ -89,7 +82,13 @@ class ProfilePageSerializer(serializers.ModelSerializer):
     
     image = serializers.SerializerMethodField(read_only=True)
     def get_image(self, obj):
-        return get_media_url(obj.extention.image)
+        try :
+            return get_media_url(obj.image.url)
+        except:
+            if obj.extention.is_page:
+                return '/static/others/page_icon.png'
+            else:
+                return '/static/others/user.png'
     
     bio = serializers.SerializerMethodField(read_only=True)
     def get_bio(self, obj):
@@ -114,7 +113,6 @@ class ProfilePageSerializer(serializers.ModelSerializer):
     is_follower = serializers.SerializerMethodField(read_only=True)
     def get_is_follower(self, obj):
         user = self.context.get('user')
-        print(user)
         return user in obj.followers.followers_list.all()
     
     
@@ -123,12 +121,16 @@ class ProfilePageSerializer(serializers.ModelSerializer):
         fields = ['name', 'is_admin', 'username', 'image', 'bio', 'followers', 'articles_count', 'is_follower', 'followers_count', 'id', 'is_page']
 
 
-class UserCard(serializers.ModelSerializer):
-    # first_name, last_name ==> name
-
+class UserCard(serializers.ModelSerializer):    
     image_150 = serializers.SerializerMethodField(read_only=True)
     def get_image_150(self, obj):
-        return get_media_url(obj.extention.image_150)
+        try:
+            return get_media_url(obj.image.url_150)
+        except:
+            if obj.extention.is_page:
+                return '/static/others/page_icon_150.png'
+            else:
+                return '/static/others/user_150.png'
     
     
     name = serializers.SerializerMethodField(read_only=True)

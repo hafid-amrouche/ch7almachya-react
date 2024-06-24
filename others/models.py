@@ -27,7 +27,7 @@ class Report(models.Model):
     reporters = models.ManyToManyField(User, related_name='reports')
     article = models.OneToOneField(Article, on_delete=models.SET_NULL, null=True, blank=True, related_name='report')
     comment = models.OneToOneField(Comment, on_delete=models.SET_NULL, null=True, blank=True, related_name='report')
-    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='report')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='report')
     created_at = models.DateTimeField(auto_now_add=True, null=True) # last time this report was unacknoleged .. because it might be aknoleged then unacknoleged again when the object gets edited
     acknoleged = models.BooleanField(default=False)
     ruled_deleted = models.BooleanField(default=False)

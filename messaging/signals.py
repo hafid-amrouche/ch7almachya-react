@@ -10,7 +10,14 @@ def update_user_messages(sender, instance, created, **kwargs):
 
         title = message.sender.page.name if message.sender.extention.is_page else message.sender.get_full_name()
         link = f'/messages/{message.sender.id}/'
-        send(message.receiver, title=title, body=message.text, link=link, icon=message.sender.extention.image_150 , type=f'message-{message.sender.id}')
+        try:
+            icon= message.sender.image.url_150
+        except:
+            if message.sender.extention.is_page:
+                icon = '/static/others/page_icon_150.png'
+            else:
+                icon = '/static/others/user_150.png'
+        send(message.receiver, title=title, body=message.text, link=link, icon=icon , type=f'message-{message.sender.id}')
 
 
 post_save.connect(update_user_messages, Message)

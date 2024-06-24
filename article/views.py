@@ -15,6 +15,7 @@ from .models import ArticleSuggestion
 from django.db.models.functions import Concat
 from django.db.models import CharField
 from django.utils.translation import gettext as _
+from user.models import User
 
 
 
@@ -35,20 +36,23 @@ def get_article(request):
         return JsonResponse({'detail' : str(e)}, status=400, safe=True)
 
 @api_view(['POST'])
-def get_article_comments(request):
-    article_id = request.POST.get('article-id')
-    seen_comments = json.loads(request.POST.get('seen-comments'))
+def get_article_comments(request): ## edited
+    time.sleep(1)
+    data = json.loads(request.body)
+    article_id = data.get('article-id')
+    seen_comments = data.get('seen-comments')
     comments = Comment.objects.filter(article__id = article_id).exclude(id__in = seen_comments)
     comments_length = len(comments)
-    comments = comments.order_by('-created_at')[:10]
+    comments = comments.order_by('-created_at')[:5]
     comments = CommentSerializer(comments, many=True).data
-    is_next = comments_length > 10
+    is_next = comments_length > 5
     return Response([comments, is_next])
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def delete_comment(request):
-    comment_id = request.POST.get('comment-id')
+def delete_comment(request): ## edited
+    data = json.loads(request.body)
+    comment_id = data.get('comment-id')
     comment = Comment.objects.get(id = comment_id)
     if request.user.is_authenticated and (comment.commenter == request.user or comment.article.creator == request.user):
        comment.delete()
@@ -58,10 +62,12 @@ def delete_comment(request):
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def create_comment(request):
-    text = request.POST.get('text').strip()
+def create_comment(request): ## edited
+    data = json.loads(request.body)
+    text = data.get('text').strip()
+    print(request.user)
     if text :
-        article = Article.objects.get(id=request.POST.get('articleId'))
+        article = Article.objects.get(id=data.get('articleId'))
         comment = request.user.comments.create(
             article = article,
             text = text,
@@ -74,8 +80,9 @@ def create_comment(request):
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def like_article(request):
-    article = Article.objects.get(id=request.POST.get('article-id'))
+def like_article(request): ## edited
+    data = json.loads(request.body)
+    article = Article.objects.get(id=data.get('article-id'))
     like, cond = Like.objects.get_or_create(liker=request.user, article=article)
     if not cond:
         like.delete()
@@ -97,8 +104,9 @@ def like_article(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def dislike_article(request):
-    article = Article.objects.get(id=request.POST.get('article-id'))
+def dislike_article(request): ## edited
+    data = json.loads(request.body)
+    article = Article.objects.get(id=data.get('article-id'))
     dislike, cond = Dislike.objects.get_or_create(disliker=request.user, article=article)
     if not cond:
         dislike.delete()
@@ -121,7 +129,8 @@ def dislike_article(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])   
 def toggle_save_article(request):
-    article = Article.objects.get(id=request.POST.get('article-id'))
+    data = json.loads(request.body)
+    article = Article.objects.get(id=data.get('article-id'))
     user = request.user
     is_saver = False
     saved_article, cond = SavedArticle.objects.get_or_create(saver=user, article=article)
@@ -365,11 +374,12 @@ def serach_articles(request):
 def get_simular_articles(request):
     search_text = request.GET.get('search_text')
     search_text_words_list = json.loads(request.GET.get('search_text_words_list'))
+    print(search_text, search_text_words_list)
     article_id = request.GET.get('article_id')
     return SA({}, [article_id], search_text_words_list, search_text)
 
 @api_view(['GET'])
-def article_suggestions(request):
+def article_suggestions(request): 
     text = request.GET.get('text')
     suggestions = ArticleSuggestion.objects.filter(text__icontains = text).order_by('-times')[:10]
     serialized_suggestions = ArticleSuggestionSerializer(suggestions, many=True).data

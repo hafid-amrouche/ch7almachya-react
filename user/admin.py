@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Followers, UserSuggestion, Review, UserExtention, Page, Location, UserToken, FCMToken, UserPassword
+from .models import Profile, Followers, UserSuggestion, Review, UserExtention, Page, Location, UserToken, FCMToken, UserPassword, Image
 # Register your models here.
 
 
@@ -13,5 +13,6 @@ admin.site.register(Location)
 admin.site.register(FCMToken)
 admin.site.register(UserToken)
 admin.site.register(UserPassword)
+admin.site.register(Image)
 
 
